@@ -1,6 +1,6 @@
-package fr.thomas.entity;
+package fr.thomas.modele.entity;
 
-import fr.thomas.map.MapElement;
+import fr.thomas.modele.map.MapElement;
 import lombok.Getter;
 
 import java.util.ArrayList;

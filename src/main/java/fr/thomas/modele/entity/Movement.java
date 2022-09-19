@@ -1,4 +1,4 @@
-package fr.thomas.entity;
+package fr.thomas.modele.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

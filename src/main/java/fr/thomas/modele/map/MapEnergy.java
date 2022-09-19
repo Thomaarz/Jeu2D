@@ -1,6 +1,6 @@
-package fr.thomas.map;
+package fr.thomas.modele.map;
 
-import fr.thomas.entity.Player;
+import fr.thomas.modele.entity.Player;
 
 public class MapEnergy extends MapEntity {
 
