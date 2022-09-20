@@ -6,6 +6,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,11 @@ public class Player extends MapElement {
 
     public Player(int x, int y) {
         super(x, y);
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+        this.powerProperty.set(this.power / 100.0);
     }
 
     /**

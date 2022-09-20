@@ -8,6 +8,10 @@ import lombok.Getter;
 @Getter
 public abstract class MapElement {
 
+    private static int idAll = 0;
+
+    private int id;
+
     private int x;
     private int y;
 
@@ -15,6 +19,8 @@ public abstract class MapElement {
     private DoubleProperty yProperty;
 
     protected MapElement(int x, int y) {
+        this.id = idAll++;
+
         this.x = x;
         this.y = y;
 
@@ -25,6 +31,14 @@ public abstract class MapElement {
     public void move(int x, int y) {
         this.x += x;
         this.y += y;
+
+        this.xProperty.set(this.x * Infos.TILE_SIZE);
+        this.yProperty.set(this.y * Infos.TILE_SIZE);
+    }
+
+    public void set(int x, int y) {
+        this.x = x;
+        this.y = y;
 
         this.xProperty.set(this.x * Infos.TILE_SIZE);
         this.yProperty.set(this.y * Infos.TILE_SIZE);

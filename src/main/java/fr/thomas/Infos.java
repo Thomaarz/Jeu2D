@@ -9,4 +9,6 @@ public class Infos {
     public static final int HEIGHT = 400;
     public static final int TILE_SIZE = 16;
 
+    public static final int MAP_SIZE = 15;
+
 }

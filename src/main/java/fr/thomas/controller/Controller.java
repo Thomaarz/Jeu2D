@@ -5,6 +5,7 @@ import fr.thomas.modele.map.MapElement;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -37,16 +38,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         map = new Map();
-        map.createMap();
-
-        // TEST
-        Image image = new Image("tiles/bloc_tile.png");
-        for (MapElement element : map.getMapElements()) {
-            ImageView imageView = new ImageView(image);
-            imageView.xProperty().bind(element.getXProperty());
-            imageView.yProperty().bind(element.getYProperty());
-            gameScreen.getChildren().add(imageView);
-        }
+        init();
         Image player = new Image("player.png");
         ImageView imageView = new ImageView(player);
         imageView.xProperty().bind(map.getPlayer().getXProperty());
@@ -63,6 +55,15 @@ public class Controller implements Initializable {
         // PowerBar
         powerBar.progressProperty().bind(map.getPlayer().getPowerProperty());
 
+        // Replay
+        replay.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                map.reset();
+                init();
+            }
+        });
+
         // Exit
         exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -70,5 +71,20 @@ public class Controller implements Initializable {
                 System.exit(0);
             }
         });
+    }
+
+    public void init() {
+        gameScreen.getChildren().removeIf(node -> node != null && node.getId() != null && node.getId().startsWith("bloc"));
+
+        // TEST
+        Image image = new Image("tiles/bloc_tile.png");
+        for (MapElement element : map.getMapElements()) {
+            ImageView imageView = new ImageView(image);
+            imageView.xProperty().bind(element.getXProperty());
+            imageView.yProperty().bind(element.getYProperty());
+            imageView.setId("bloc" + element.getId());
+            gameScreen.getChildren().add(imageView);
+        }
+
     }
 }
