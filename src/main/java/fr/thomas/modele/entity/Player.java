@@ -1,6 +1,10 @@
 package fr.thomas.modele.entity;
 
 import fr.thomas.modele.map.MapElement;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -14,6 +18,9 @@ public class Player extends MapElement {
     public static final int POWER_WIN = 10;
 
     private int power = DEFAULT_POWER;
+
+    private DoubleProperty powerProperty = new SimpleDoubleProperty(power / 100.0);
+
     private int canceledMovements = 0;
     private List<Movement> movementsHistory = new ArrayList<>();
 
@@ -34,6 +41,8 @@ public class Player extends MapElement {
      */
     public void removePower(int power) {
         this.power -= power;
+
+        this.powerProperty.set(this.power / 100.0);
     }
 
     /**
@@ -41,6 +50,8 @@ public class Player extends MapElement {
      */
     public void addPower(int power) {
         this.power += power;
+
+        this.powerProperty.set(this.power / 100.0);
     }
 
     /**

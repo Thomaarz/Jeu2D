@@ -1,14 +1,22 @@
 package fr.thomas.modele.map;
 
 import fr.thomas.modele.entity.Player;
+import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Getter
 public class Map {
 
     private Player player;
     private List<MapElement> mapElements;
+
+    public Map() {
+        this.player = new Player(0, 0);
+        this.mapElements = new ArrayList<>();
+    }
 
     private void createMap() {
 
