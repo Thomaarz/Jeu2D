@@ -33,7 +33,6 @@ public class Player extends MapElement {
      */
     public void move(Movement movement) {
         super.move(movement.getX(), movement.getY());
-        removePower(POWER_LOSS);
     }
 
     /**

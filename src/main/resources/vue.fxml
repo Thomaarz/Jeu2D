@@ -41,7 +41,7 @@
    <center>
       <Pane fx:id="gameScreen" BorderPane.alignment="CENTER">
          <children>
-            <ProgressBar fx:id="powerBar" layoutX="250.0" layoutY="336.0" prefHeight="25.0" prefWidth="100.0" progress="0.0" />
+            <ProgressBar fx:id="powerBar" layoutX="250.0" layoutY="336.0" prefHeight="25.0" prefWidth="100.0" progress="1.0" />
             <Button fx:id="replay" layoutX="461.0" layoutY="306.0" mnemonicParsing="false" prefWidth="115.0" text="Recommencer" />
             <Button fx:id="exit" layoutX="461.0" layoutY="348.0" mnemonicParsing="false" prefWidth="115.0" text="Quitter" />
          </children>
