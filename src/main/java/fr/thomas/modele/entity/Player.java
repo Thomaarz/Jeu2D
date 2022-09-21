@@ -1,18 +1,18 @@
 package fr.thomas.modele.entity;
 
-import fr.thomas.modele.map.MapElement;
+import fr.thomas.exceptions.MovementException;
+import fr.thomas.modele.map.Localizable;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Player extends MapElement {
+public class Player extends Localizable {
+
+    public static final int MAX_CANCEL = 5;
 
     public static final int DEFAULT_POWER = 100;
     public static final int POWER_LOSS = 10;
@@ -35,7 +35,7 @@ public class Player extends MapElement {
     }
 
     /**
-     * Move the player in the movement and remove the power
+     * Move the player in the movement
      */
     public void move(Movement movement) {
         super.move(movement.getX(), movement.getY());
@@ -44,7 +44,11 @@ public class Player extends MapElement {
     /**
      * Remove power
      */
-    public void removePower(int power) {
+    public void removePower(int power) throws MovementException {
+        if (this.power <= 0) {
+            throw new MovementException("Aucune énergie disponible.");
+        }
+
         this.power -= power;
 
         this.powerProperty.set(this.power / 100.0);
@@ -69,7 +73,7 @@ public class Player extends MapElement {
     /**
      * Cancel "amount" movement
      */
-    public void cancelMovement(int amount) {
+    public void cancelMovement(int amount) throws MovementException {
         for (int i = 0; i < amount; i++) {
             cancelMovement();
         }
@@ -78,7 +82,21 @@ public class Player extends MapElement {
     /**
      * Cancel one movement, remove from history and give power
      */
-    private void cancelMovement() {
+    private void cancelMovement() throws MovementException {
+
+        // No Movement in history
+        if (movementsHistory.size() <= 0) {
+            throw new MovementException("Impossible d'annuler le dernier déplacement.");
+        }
+
+        // Cancel max movements
+        if (canceledMovements >= MAX_CANCEL) {
+            throw new MovementException("Vous avez annuler le maximum de déplacement (" + MAX_CANCEL + ")");
+        }
+
+        // Add Cancel
+        canceledMovements++;
+
         // Last Movement
         Movement last = movementsHistory.get(movementsHistory.size() - 1);
 
@@ -89,7 +107,17 @@ public class Player extends MapElement {
         movementsHistory.remove(movementsHistory.size() - 1);
 
         // Give Power
-        addPower(POWER_WIN + POWER_LOSS);
+        addPower(POWER_LOSS);
+    }
+
+    /**
+     * Reset the player stats (for replay)
+     */
+    public void reset() {
+        set(1, 4);
+        setPower(Player.DEFAULT_POWER);
+        movementsHistory = new ArrayList<>();
+        canceledMovements = 0;
     }
 
     @Override

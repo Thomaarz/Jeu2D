@@ -1,5 +1,9 @@
 package fr.thomas;
 
+import javafx.scene.image.Image;
+
+import java.awt.*;
+
 public class Infos {
 
     public static final String NAME = "Jeu2D";
@@ -10,5 +14,7 @@ public class Infos {
     public static final int TILE_SIZE = 16;
 
     public static final int MAP_SIZE = 15;
+
+    public static final Image TILESET = new Image("tileset.png");
 
 }
