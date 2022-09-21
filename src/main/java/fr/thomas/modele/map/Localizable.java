@@ -46,4 +46,14 @@ public class Localizable {
         this.xProperty.set(this.x * Infos.TILE_SIZE + START_X);
         this.yProperty.set(this.y * Infos.TILE_SIZE + START_Y);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Localizable) {
+            Localizable other = (Localizable) obj;
+            return x == other.getX() && y == other.getY();
+        } else {
+            return false;
+        }
+    }
 }

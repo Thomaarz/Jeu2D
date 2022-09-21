@@ -1,7 +1,9 @@
 package fr.thomas.modele.entity;
 
+import fr.thomas.Infos;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.map.Localizable;
+import fr.thomas.utils.Utils;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
@@ -114,7 +116,7 @@ public class Player extends Localizable {
      * Reset the player stats (for replay)
      */
     public void reset() {
-        set(1, 4);
+        set(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
         setPower(Player.DEFAULT_POWER);
         movementsHistory = new ArrayList<>();
         canceledMovements = 0;

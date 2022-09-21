@@ -1,17 +1,18 @@
-package fr.thomas.controller;
+package fr.thomas.controller.listeners;
 
+import fr.thomas.controller.Controller;
 import fr.thomas.controller.tasks.LoseTask;
 import fr.thomas.controller.tasks.WinTask;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.entity.Movement;
 import fr.thomas.modele.entity.MovementResult;
 import fr.thomas.modele.entity.Player;
+import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.MapEntity;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.bloc.VueEnergy;
 import javafx.event.EventHandler;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 
 public class KeyListener implements EventHandler<KeyEvent> {
@@ -19,13 +20,11 @@ public class KeyListener implements EventHandler<KeyEvent> {
     private Controller controller;
     private Map map;
     private Player player;
-    private TextArea textChat;
 
     public KeyListener(Controller controller) {
         this.controller = controller;
-        this.map = controller.getMap();
+        this.map = controller.getGame().getMap();
         this.player = map.getPlayer();
-        this.textChat = controller.getTextChat();
     }
 
     @Override
@@ -50,6 +49,10 @@ public class KeyListener implements EventHandler<KeyEvent> {
             return;
         }
 
+        if (controller.getGame().getGameState() != GameState.PLAY) {
+            return;
+        }
+
         MapEntity element = map.getElement(player.getX() + movement.getX(), player.getY() + movement.getY());
 
         MovementResult result = MovementResult.ALLOW;
@@ -58,7 +61,7 @@ public class KeyListener implements EventHandler<KeyEvent> {
             result = element.onPass(player, vueElement);
             if (vueElement instanceof VueEnergy) {
                 controller.getVueElements().remove(vueElement.getId());
-                controller.getMap().getMapEntities().remove(element);
+                controller.getGame().getMap().getMapEntities().remove(element);
             }
         }
 
@@ -69,6 +72,7 @@ public class KeyListener implements EventHandler<KeyEvent> {
                 player.move(movement);
             } catch (MovementException e) {
                 controller.addChatLine(e.getMessage());
+                new LoseTask(controller).start();
             }
         } else if (result == MovementResult.WIN) {
             controller.addChatLine("GAGNE !");

@@ -9,6 +9,8 @@ public class LoseTask extends GameTask {
     public LoseTask(Controller controller) {
         super(controller);
         controller.getTextInfo().setText("Perdu !");
+
+        controller.openMenu();
     }
 
     @Override
@@ -18,15 +20,6 @@ public class LoseTask extends GameTask {
         if (getTimer() == 500) {
             getGameLoop().stop();
             getController().getTextInfo().setText(null);
-        }
-
-        if (getTimer() % 5 == 0) {
-            /*
-            getController().getMap().getMapEntities().forEach(mapEntity -> {
-
-                mapEntity.move(Utils.random(-1, 3), Utils.random(-1, 3));
-            });
-             */
         }
     }
 }

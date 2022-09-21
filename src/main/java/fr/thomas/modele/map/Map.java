@@ -1,13 +1,10 @@
 package fr.thomas.modele.map;
 
 import fr.thomas.Infos;
-import fr.thomas.modele.map.entity.House;
+import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
 import fr.thomas.utils.Utils;
 import fr.thomas.modele.entity.Player;
-import fr.thomas.modele.map.entity.Bloc;
-import fr.thomas.modele.map.entity.Energy;
-import fr.thomas.modele.map.entity.MapEntity;
 import lombok.Getter;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +19,7 @@ public class Map {
     private List<MapEntity> mapEntities;
 
     public Map() {
-        this.player = new Player(1, 4);
+        this.player = new Player(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
         this.mapEntities = new ArrayList<>();
 
         createMap();
@@ -43,10 +40,13 @@ public class Map {
         }
 
         // Create a random amount of entity
-        createEntities(Bloc.class, 20, 25);
-        createEntities(Energy.class, 5, 7);
         createEntities(House.class, 1, 1);
-        createEntities(Void.class, 2, 5);
+        //createEntities(Void.class, 2, 5);
+        //createEntities(Bloc.class, 100, 100);
+        createBlocs(Bloc.class);
+        createEntities(Energy.class, 5, 7);
+        createEntities(Empty.class, 10, 10);
+
     }
 
     /**
@@ -54,8 +54,10 @@ public class Map {
      * Used for generate a winnable map
      */
     private boolean canWin(boolean usePower) {
-        // TODO
-        return true;
+        Localizable base = new Localizable(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
+
+        MapSolver solver = new MapSolver(this);
+        return solver.verifyNext(base);
     }
 
     /**
@@ -91,13 +93,14 @@ public class Map {
         int choose = Utils.random(min, max);
 
         while (current < choose) {
-            int x = Utils.random(2, Infos.MAP_SIZE - 1);
-            int y = Utils.random(2, Infos.MAP_SIZE - 1);
+
+            int x = Utils.random(1, Infos.MAP_SIZE - 1);
+            int y = Utils.random(1, Infos.MAP_SIZE - 1);
 
             Localizable element = getElement(x, y);
 
             // Element already exist at this position
-            if (element != null) {
+            if (element != null || (x == Infos.MAP_SIZE / 2 && y == Infos.MAP_SIZE / 2)) {
                 continue;
             }
 
@@ -105,6 +108,35 @@ public class Map {
                 MapEntity entity = e.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
                 mapEntities.add(entity);
                 current++;
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void createBlocs(Class<? extends MapEntity> e) {
+
+        while (canWin(false)) {
+
+            int x = Utils.random(1, Infos.MAP_SIZE - 1);
+            int y = Utils.random(1, Infos.MAP_SIZE - 1);
+
+            Localizable element = getElement(x, y);
+
+            // Element already exist at this position
+            if (element != null || (x == Infos.MAP_SIZE / 2 && y == Infos.MAP_SIZE / 2)) {
+                continue;
+            }
+
+            try {
+                MapEntity entity = e.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
+                mapEntities.add(entity);
+
+                if (!canWin(false)) {
+                    mapEntities.remove(entity);
+                    return;
+                }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException ex) {
                 ex.printStackTrace();
