@@ -1,5 +1,6 @@
 package fr.thomas;
 
+import fr.thomas.controller.listeners.KeyListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

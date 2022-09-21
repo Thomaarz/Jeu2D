@@ -30,13 +30,6 @@ public class WinTask extends GameTask {
         // End
         if (getTimer() == 50) {
             getGameLoop().stop();
-            getController().getVueElements().forEach((s, vueElement) -> {
-                if (vueElement instanceof VueHouse) {
-                    vueElement.getImageView().setScaleX(1);
-                    vueElement.getImageView().setScaleY(1);
-                    vueElement.getImageView().setRotate(0);
-                }
-            });
         }
     }
 }

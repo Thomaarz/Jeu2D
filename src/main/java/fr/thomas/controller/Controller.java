@@ -52,6 +52,9 @@ public class Controller implements Initializable {
     private Button cancelMovement;
 
     @FXML
+    private Text powerKey;
+
+    @FXML
     private ProgressBar powerBar;
 
     @FXML
@@ -59,6 +62,15 @@ public class Controller implements Initializable {
 
     @FXML
     private Text textInfo;
+
+    @FXML
+    private Text moveValue;
+
+    @FXML
+    private Text moveKey;
+
+    @FXML
+    private Text endInfo;
 
 
     @Override
@@ -72,6 +84,9 @@ public class Controller implements Initializable {
         // Listeners
         gameScreen.setFocusTraversable(true);
         gameScreen.setOnKeyPressed(new KeyListener(this));
+
+        // Chat
+        textChat.setFocusTraversable(true);
 
         // PowerBar
         powerBar.progressProperty().bind(game.getMap().getPlayer().getPowerProperty());
@@ -90,7 +105,10 @@ public class Controller implements Initializable {
                 addChatLine("Impossible de retourner en arrière !");
             }
         });
-        exit.setOnMouseClicked(event -> System.exit(0));
+        exit.setOnMouseClicked(event -> {
+            Utils.saveGame(game);
+            System.exit(0);
+        });
     }
 
     /**
@@ -110,6 +128,8 @@ public class Controller implements Initializable {
         // Clear Texts
         textChat.clear();
         textInfo.setText(null);
+        moveValue.setText("0");
+        cancelMovement.setDisable(false);
 
         // Add Info in Chat
         addChatLine("Nouvelle partie !");
@@ -161,16 +181,41 @@ public class Controller implements Initializable {
             vueElement.remove();
         });
 
+        // Hide
+        getTextChat().setVisible(false);
+        getPowerKey().setVisible(false);
+        getPowerBar().setVisible(false);
+        getCancelMovement().setVisible(false);
+        getMoveKey().setVisible(false);
+        getMoveValue().setVisible(false);
+
+        // Show
         getExit().setVisible(true);
         getReplay().setVisible(true);
+
+        endInfo.setText("Déplacements: " + getGame().getMap().getPlayer().getMovementsHistory().size() + "\n" +
+                "Energie: " + getGame().getMap().getPlayer().getPower() + "%\n" +
+                "");
+
+        getEndInfo().setVisible(true);
         vuePlayer.remove();
     }
 
     public void hideMenu() {
         game.setGameState(GameState.PLAY);
 
+        // Show
+        getTextChat().setVisible(true);
+        getPowerKey().setVisible(true);
+        getPowerBar().setVisible(true);
+        getCancelMovement().setVisible(true);
+        getMoveKey().setVisible(true);
+        getMoveValue().setVisible(true);
+
+        // Hide
         getExit().setVisible(false);
         getReplay().setVisible(false);
+        getEndInfo().setVisible(false);
 
         vuePlayer.add();
     }

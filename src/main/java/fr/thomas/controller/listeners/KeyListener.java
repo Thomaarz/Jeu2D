@@ -67,9 +67,13 @@ public class KeyListener implements EventHandler<KeyEvent> {
 
         if (result == MovementResult.ALLOW) {
             try {
+                if (player.hasVisited(player.getX() + movement.getX(), player.getY() + movement.getY())) {
+                    controller.addChatLine("Case déjà visité !");
+                }
                 player.removePower(Player.POWER_LOSS);
                 player.addMovement(movement);
                 player.move(movement);
+                controller.getMoveValue().setText(String.valueOf(player.getMovementsHistory().size()));
             } catch (MovementException e) {
                 controller.addChatLine(e.getMessage());
                 new LoseTask(controller).start();

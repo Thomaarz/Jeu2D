@@ -3,13 +3,13 @@ package fr.thomas.modele.entity;
 import fr.thomas.Infos;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.map.Localizable;
-import fr.thomas.utils.Utils;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class Player extends Localizable {
@@ -27,6 +27,8 @@ public class Player extends Localizable {
     private int canceledMovements = 0;
     private List<Movement> movementsHistory = new ArrayList<>();
 
+    private List<Localizable> visited = new ArrayList<>();
+
     public Player(int x, int y) {
         super(x, y);
     }
@@ -40,6 +42,7 @@ public class Player extends Localizable {
      * Move the player in the movement
      */
     public void move(Movement movement) {
+        visited.add(new Localizable(getX(), getY()));
         super.move(movement.getX(), movement.getY());
     }
 
@@ -119,7 +122,13 @@ public class Player extends Localizable {
         set(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
         setPower(Player.DEFAULT_POWER);
         movementsHistory = new ArrayList<>();
+        visited = new ArrayList<>();
         canceledMovements = 0;
+    }
+
+    public boolean hasVisited(int x, int y) {
+        Optional<Localizable> location = visited.stream().filter(visited -> visited.getX() == x && visited.getY() == y).findAny();
+        return location.isPresent();
     }
 
     @Override

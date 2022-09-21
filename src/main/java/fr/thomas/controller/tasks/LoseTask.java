@@ -17,9 +17,8 @@ public class LoseTask extends GameTask {
     public void onTick() {
 
         // End
-        if (getTimer() == 500) {
+        if (getTimer() == 50) {
             getGameLoop().stop();
-            getController().getTextInfo().setText(null);
         }
     }
 }
