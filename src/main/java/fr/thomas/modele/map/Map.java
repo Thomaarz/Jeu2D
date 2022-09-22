@@ -42,7 +42,6 @@ public class Map {
         // Create a random amount of entity
         createEntities(House.class, 1, 1);
         //createEntities(Void.class, 2, 5);
-        //createEntities(Bloc.class, 100, 100);
         createBlocs(Bloc.class);
         createEntities(Energy.class, 5, 7);
         createEntities(Empty.class, 10, 10);
@@ -57,7 +56,7 @@ public class Map {
         Localizable base = new Localizable(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
 
         MapSolver solver = new MapSolver(this);
-        return solver.verifyNext(base);
+        return solver.canGo(base, solver.getHouse());
     }
 
     /**

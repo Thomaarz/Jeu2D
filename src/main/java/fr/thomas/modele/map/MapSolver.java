@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @RequiredArgsConstructor
@@ -19,19 +20,19 @@ public class MapSolver {
 
     private List<Localizable> verified = new ArrayList<>();
 
-    public boolean verifyNext(Localizable current) {
+    public boolean canGo(Localizable current, Localizable expected) {
         List<Localizable> nexts = getNextCases(current);
         boolean houseNext = false;
 
         for (Localizable next : nexts) {
-            if (map.getElement(next.getX(), next.getY()) instanceof House) {
+            if (next.getX() == expected.getX() && next.getY() == expected.getY()) {
                 return true;
             }
         }
 
         for (Localizable next : nexts) {
             if (!houseNext) {
-                houseNext = verifyNext(next);
+                houseNext = canGo(next, expected);
             }
         }
 
@@ -55,5 +56,10 @@ public class MapSolver {
 
         verified.addAll(f);
         return f;
+    }
+
+    public MapEntity getHouse() {
+        Optional<MapEntity> mapEntity = map.getMapEntities().stream().filter(entity -> entity instanceof House).findAny();
+        return mapEntity.orElse(null);
     }
 }

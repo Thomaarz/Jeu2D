@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 
 public class VueVoid extends VueElement {
 
-    public static final Image house = new Image("tiles/void_tile.png");
+    public static final Image house = new Image("tiles/empty_tile.png");
 
     public VueVoid(Localizable element, Pane gameScreen) {
         super(house, element, gameScreen);
