@@ -1,8 +1,7 @@
 package fr.thomas.controller.tasks;
 
 import fr.thomas.controller.Controller;
-import fr.thomas.utils.Utils;
-import javafx.scene.layout.Pane;
+import fr.thomas.modele.game.GameState;
 
 public class LoseTask extends GameTask {
 
@@ -10,7 +9,7 @@ public class LoseTask extends GameTask {
         super(controller);
         controller.getTextInfo().setText("Perdu !");
 
-        controller.openMenu();
+        controller.getMenusManager().setGameState(GameState.MENU);
     }
 
     @Override

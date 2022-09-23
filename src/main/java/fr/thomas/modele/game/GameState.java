@@ -2,7 +2,8 @@ package fr.thomas.modele.game;
 
 public enum GameState {
 
-    WAIT,
-    PLAY;
+    PLAY,
+    MENU,
+    OPTIONS;
 
 }

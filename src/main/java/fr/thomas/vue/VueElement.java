@@ -33,4 +33,12 @@ public class VueElement {
         gameScreen.getChildren().remove(imageView);
     }
 
+    public void hide() {
+        imageView.setVisible(false);
+    }
+
+    public void show() {
+        imageView.setVisible(true);
+    }
+
 }

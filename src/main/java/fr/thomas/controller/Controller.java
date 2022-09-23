@@ -1,55 +1,72 @@
 package fr.thomas.controller;
 
 import fr.thomas.controller.listeners.KeyListener;
+import fr.thomas.controller.managers.GameManager;
+import fr.thomas.controller.managers.MenusManager;
+import fr.thomas.controller.managers.OptionsManager;
 import fr.thomas.modele.game.Game;
 import fr.thomas.modele.game.GameState;
-import fr.thomas.modele.map.entity.*;
-import fr.thomas.modele.map.entity.Void;
 import fr.thomas.utils.Utils;
 import fr.thomas.exceptions.MovementException;
-import fr.thomas.modele.map.Map;
-import fr.thomas.modele.map.Localizable;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.VuePlayer;
-import fr.thomas.vue.bloc.VueBloc;
-import fr.thomas.vue.bloc.VueEnergy;
-import fr.thomas.vue.bloc.VueHouse;
-import fr.thomas.vue.bloc.VueVoid;
+import fr.thomas.vue.menus.VueMenuGame;
+import fr.thomas.vue.menus.VueMenuMain;
+import fr.thomas.vue.menus.VueMenuOptions;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 @Getter
+@Setter
 public class Controller implements Initializable {
 
     private java.util.Map<String, VueElement> vueElements = new HashMap<>();
 
     private VuePlayer vuePlayer;
 
+    private VueMenuGame vueMenuGame;
+
+    private VueMenuMain vueMenuMain;
+
+    private VueMenuOptions vueMenuOptions;
+
     private Game game;
+
+    private OptionsManager optionsManager;
+
+    private MenusManager menusManager;
+
+    private GameManager gameManager;
 
     @FXML
     private Pane gameScreen;
 
     @FXML
-    private Button replay;
-
-    @FXML
-    private Button exit;
+    private Button play;
 
     @FXML
     private Button cancelMovement;
+
+    @FXML
+    private Button returnMenu;
+
+    @FXML
+    private Button options;
+
+    @FXML
+    private Button continueGame;
 
     @FXML
     private Text powerKey;
@@ -70,76 +87,86 @@ public class Controller implements Initializable {
     private Text moveKey;
 
     @FXML
-    private Text endInfo;
+    private TextField topBind;
+
+    @FXML
+    private TextField bottomBind;
+
+    @FXML
+    private TextField rightBind;
+
+    @FXML
+    private TextField leftBind;
+
+    @FXML
+    private Text topKey;
+
+    @FXML
+    private Text bottomKey;
+
+    @FXML
+    private Text rightKey;
+
+    @FXML
+    private Text leftKey;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Create Game
-        game = new Game(new Map(), GameState.PLAY);
-        vuePlayer = new VuePlayer(getGame().getMap().getPlayer(), gameScreen);
-        init();
+        // Managers
+        optionsManager = new OptionsManager(this);
+        optionsManager.load();
+        gameManager = new GameManager(this);
+        gameManager.createGame();
+        menusManager = new MenusManager(this);
+
+        // Vues
+        initVues();
 
         // Listeners
         gameScreen.setFocusTraversable(true);
         gameScreen.setOnKeyPressed(new KeyListener(this));
 
+        // Default State
+        menusManager.setGameState(GameState.MENU);
+
         // Chat
         textChat.setFocusTraversable(true);
 
         // PowerBar
-        powerBar.progressProperty().bind(game.getMap().getPlayer().getPowerProperty());
+        powerBar.progressProperty().bind(game.getPlayer().getPowerProperty());
 
-        // Buttons
-        replay.setOnMouseClicked(event -> {
-            game.getMap().reset();
-            hideMenu();
-            init();
+        // Jouer
+        play.setOnMouseClicked(event -> {
+            gameManager.clearLastGameMap();
+            game.getPlayer().reset();
+            gameManager.generateMap();
+            menusManager.setGameState(GameState.PLAY);
         });
+
+        // Cancel Movement
         cancelMovement.setOnMouseClicked(event -> {
             try {
-                game.getMap().getPlayer().cancelMovement(1);
+                game.getPlayer().cancelMovement(1);
                 addChatLine("Retour en arrière !");
             } catch (MovementException e) {
                 addChatLine("Impossible de retourner en arrière !");
             }
         });
-        exit.setOnMouseClicked(event -> {
-            Utils.saveGame(game);
-            System.exit(0);
+
+        // Options
+        options.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.OPTIONS);
         });
-    }
 
-    /**
-     * Call this function for init or replay
-     */
-    public void init() {
+        // Return
+        returnMenu.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.MENU);
 
-        // Remove each bloc, energy, ...
-        gameScreen.getChildren().removeIf(node -> node != null && node.getId() != null && node.getId().startsWith("entity"));
-
-        // Place Player
-        placePlayer();
-
-        // Place Elements
-        placeElements();
-
-        // Clear Texts
-        textChat.clear();
-        textInfo.setText(null);
-        moveValue.setText("0");
-        cancelMovement.setDisable(false);
-
-        // Add Info in Chat
-        addChatLine("Nouvelle partie !");
-    }
-
-    /**
-     * Create the player node
-     */
-    public void placePlayer() {
-        this.vuePlayer.add();
+            // TODO
+            optionsManager.save();
+        });
     }
 
     /**
@@ -149,74 +176,22 @@ public class Controller implements Initializable {
         textChat.appendText(Utils.getTime() + ": " + message + "\n");
     }
 
-    /**
-     * Place the elements from the mapEntities
-     */
-    public void placeElements() {
 
-        // Blocs & Energy & House & Void
-        for (Localizable element : game.getMap().getMapEntities()) {
-            VueElement vueElement = null;
-            if (element instanceof Bloc) {
-                vueElement = new VueBloc(element, gameScreen);
-            } else if (element instanceof Energy) {
-                vueElement = new VueEnergy(element, gameScreen);
-            } else if (element instanceof House) {
-                vueElement = new VueHouse(element, gameScreen);
-            } else if (element instanceof Void) {
-                vueElement = new VueVoid(element, gameScreen);
-            }
-
-            if (vueElement != null) {
-                vueElement.add();
-                vueElements.put(vueElement.getId(), vueElement);
-            }
-        }
-    }
-
-    public void openMenu() {
-        game.setGameState(GameState.WAIT);
-
-        getVueElements().forEach((s, vueElement) -> {
-            vueElement.remove();
-        });
-
-        // Hide
-        getTextChat().setVisible(false);
-        getPowerKey().setVisible(false);
-        getPowerBar().setVisible(false);
-        getCancelMovement().setVisible(false);
-        getMoveKey().setVisible(false);
-        getMoveValue().setVisible(false);
-
-        // Show
-        getExit().setVisible(true);
-        getReplay().setVisible(true);
-
-        endInfo.setText("Déplacements: " + getGame().getMap().getPlayer().getMovementsHistory().size() + "\n" +
-                "Energie: " + getGame().getMap().getPlayer().getPower() + "%\n" +
-                "");
-
-        getEndInfo().setVisible(true);
-        vuePlayer.remove();
-    }
-
-    public void hideMenu() {
-        game.setGameState(GameState.PLAY);
-
-        // Show
-        getTextChat().setVisible(true);
-        getPowerKey().setVisible(true);
-        getPowerBar().setVisible(true);
-        getCancelMovement().setVisible(true);
-        getMoveKey().setVisible(true);
-        getMoveValue().setVisible(true);
-
-        // Hide
-        getExit().setVisible(false);
-        getReplay().setVisible(false);
-        getEndInfo().setVisible(false);
-
+    private void initVues() {
+        vuePlayer = new VuePlayer(getGame().getPlayer(), gameScreen);
         vuePlayer.add();
+
+        vueMenuGame = new VueMenuGame(gameScreen);
+        vueMenuGame.addNode(textChat, powerKey, powerBar, cancelMovement, moveKey, moveValue);
+        vueMenuGame.add();
+
+        vueMenuMain = new VueMenuMain(gameScreen);
+        vueMenuMain.addNode(play, continueGame, options);
+        vueMenuMain.add();
+
+        vueMenuOptions = new VueMenuOptions(getGameScreen());
+        vueMenuOptions.addNode(returnMenu, topBind, bottomBind, leftBind, rightBind, topKey, bottomKey, rightKey, leftKey);
+        vueMenuOptions.add();
     }
+
 }

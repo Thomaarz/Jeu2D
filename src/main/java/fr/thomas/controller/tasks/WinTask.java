@@ -1,6 +1,7 @@
 package fr.thomas.controller.tasks;
 
 import fr.thomas.controller.Controller;
+import fr.thomas.modele.game.GameState;
 import fr.thomas.vue.bloc.VueHouse;
 
 public class WinTask extends GameTask {
@@ -9,7 +10,7 @@ public class WinTask extends GameTask {
         super(controller);
         controller.getTextInfo().setText("Gagné !");
 
-        controller.openMenu();
+        controller.getMenusManager().setGameState(GameState.MENU);
     }
 
     @Override

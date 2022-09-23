@@ -11,24 +11,25 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 public class Map {
 
-    private Player player;
     private List<MapEntity> mapEntities;
 
     public Map() {
-        this.player = new Player(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
         this.mapEntities = new ArrayList<>();
+    }
 
-        createMap();
+    public List<MapEntity> getElements(Class<? extends MapEntity> e) {
+        return mapEntities.stream().filter(entity -> entity.getClass() == e).collect(Collectors.toList());
     }
 
     /**
      * Create the map with dimension defined in {@link Infos}
      */
-    private void createMap() {
+    public void createMap() {
 
         // Bord
         for (int x = 0; x < Infos.MAP_SIZE; x++) {
@@ -52,12 +53,33 @@ public class Map {
      * Check if the current map is winnable with verify the power or not
      * Used for generate a winnable map
      */
-    private boolean canWin(boolean usePower) {
+    private boolean canGo() {
         Localizable base = new Localizable(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
-
         MapSolver solver = new MapSolver(this);
         return solver.canGo(base, solver.getHouse());
     }
+
+    /**
+     * Check if the player can go to a location
+     * @param to: The location where the player want to go
+     * @return true if the player can go to the location
+     */
+    private boolean canGo(Localizable to) {
+        Localizable from = new Localizable(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
+        return canGo(from, to);
+    }
+
+    /**
+     * Check if a path exists between two locations
+     * @param from: the begin position
+     * @param to: the end position
+     * @return true if a path exists
+     */
+    private boolean canGo(Localizable from, Localizable to) {
+        MapSolver solver = new MapSolver(this);
+        return solver.canGo(from, to);
+    }
+
 
     /**
      * Get tans element of the mapElements
@@ -76,9 +98,6 @@ public class Map {
      */
     public void reset() {
         this.mapEntities = new ArrayList<>();
-        createMap();
-
-        player.reset();
     }
 
     /**
@@ -103,6 +122,10 @@ public class Map {
                 continue;
             }
 
+            if (!canGo(new Localizable(x, y))) {
+                continue;
+            }
+
             try {
                 MapEntity entity = e.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
                 mapEntities.add(entity);
@@ -116,7 +139,7 @@ public class Map {
 
     public void createBlocs(Class<? extends MapEntity> e) {
 
-        while (canWin(false)) {
+        while (canGo()) {
 
             int x = Utils.random(1, Infos.MAP_SIZE - 1);
             int y = Utils.random(1, Infos.MAP_SIZE - 1);
@@ -132,7 +155,7 @@ public class Map {
                 MapEntity entity = e.getDeclaredConstructor(int.class, int.class).newInstance(x, y);
                 mapEntities.add(entity);
 
-                if (!canWin(false)) {
+                if (!canGo()) {
                     mapEntities.remove(entity);
                     return;
                 }

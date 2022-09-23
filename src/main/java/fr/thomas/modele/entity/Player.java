@@ -14,7 +14,7 @@ import java.util.Optional;
 @Getter
 public class Player extends Localizable {
 
-    public static final int MAX_CANCEL = 5;
+    public static final int MAX_CANCEL = 6;
 
     public static final int DEFAULT_POWER = 100;
     public static final int POWER_LOSS = 10;
@@ -23,6 +23,8 @@ public class Player extends Localizable {
     private int power = DEFAULT_POWER;
 
     private DoubleProperty powerProperty = new SimpleDoubleProperty(power / 100.0);
+
+    private int powerUsed = 0;
 
     private int canceledMovements = 0;
     private List<Movement> movementsHistory = new ArrayList<>();
@@ -105,7 +107,7 @@ public class Player extends Localizable {
         // Last Movement
         Movement last = movementsHistory.get(movementsHistory.size() - 1);
 
-        // Move Opossite Direction
+        // Move Opposite Direction
         move(last.getOpposite());
 
         // Remove Last Movement from History
@@ -124,11 +126,25 @@ public class Player extends Localizable {
         movementsHistory = new ArrayList<>();
         visited = new ArrayList<>();
         canceledMovements = 0;
+        powerUsed = 0;
     }
 
+    /**
+     * Check if player already have visited location
+     * @param x: the x coord
+     * @param y: the y coord
+     * @return true if the player already already have visited the case
+     */
     public boolean hasVisited(int x, int y) {
         Optional<Localizable> location = visited.stream().filter(visited -> visited.getX() == x && visited.getY() == y).findAny();
         return location.isPresent();
+    }
+
+    /**
+     * Add the amount of power pickup
+     */
+    public void addUsedPower() {
+        this.powerUsed++;
     }
 
     @Override

@@ -13,6 +13,7 @@ public class Energy extends MapEntity {
     @Override
     public MovementResult onPass(Player player, VueElement vueElement) {
         player.addPower(50);
+        player.addUsedPower();
         vueElement.remove();
         return MovementResult.ALLOW;
     }

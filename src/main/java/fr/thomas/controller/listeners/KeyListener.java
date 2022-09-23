@@ -10,6 +10,8 @@ import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.MapEntity;
+import fr.thomas.utils.options.Options;
+import fr.thomas.utils.options.OptionsUtils;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.bloc.VueEnergy;
 import javafx.event.EventHandler;
@@ -24,25 +26,21 @@ public class KeyListener implements EventHandler<KeyEvent> {
     public KeyListener(Controller controller) {
         this.controller = controller;
         this.map = controller.getGame().getMap();
-        this.player = map.getPlayer();
+        this.player = controller.getGame().getPlayer();
     }
 
     @Override
     public void handle(KeyEvent event) {
         Movement movement = null;
-        switch (event.getCode()) {
-            case Z:
-                movement = Movement.TOP;
-                break;
-            case S:
-                movement = Movement.BOTTOM;
-                break;
-            case Q:
-                movement = Movement.LEFT;
-                break;
-            case D:
-                movement = Movement.RIGHT;
-                break;
+        String key = event.getText();
+        if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_TOP))) {
+            movement = Movement.TOP;
+        } else if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_BOTTOM))) {
+            movement = Movement.BOTTOM;
+        } else if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_LEFT))) {
+            movement = Movement.LEFT;
+        } else if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_RIGHT))) {
+            movement = Movement.RIGHT;
         }
 
         if (movement == null) {
