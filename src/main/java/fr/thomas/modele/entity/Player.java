@@ -18,7 +18,6 @@ public class Player extends Localizable {
 
     public static final int DEFAULT_POWER = 100;
     public static final int POWER_LOSS = 10;
-    public static final int POWER_WIN = 10;
 
     private int power = DEFAULT_POWER;
 

@@ -7,9 +7,14 @@ public class LoseTask extends GameTask {
 
     public LoseTask(Controller controller) {
         super(controller);
-        controller.getTextInfo().setText("Perdu !");
 
-        controller.getMenusManager().setGameState(GameState.MENU);
+        controller.getMenusManager().setGameState(GameState.END);
+        controller.getTextInfo().setText("Perdu !");
+        controller.getEndInfos().setText("AHAHAHAHHAHAHA NUL !\n" +
+                "Déplacements effectués: " + controller.getGame().getPlayer().getMovementsHistory().size() + "\n" +
+                "Energies collectées: " + controller.getGame().getPlayer().getPowerUsed() + "\n" +
+                "Retours effectués: " + controller.getGame().getPlayer().getCanceledMovements() + "\n" +
+                "");
     }
 
     @Override

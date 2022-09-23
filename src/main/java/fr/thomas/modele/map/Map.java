@@ -4,7 +4,6 @@ import fr.thomas.Infos;
 import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
 import fr.thomas.utils.Utils;
-import fr.thomas.modele.entity.Player;
 import lombok.Getter;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,10 +41,8 @@ public class Map {
 
         // Create a random amount of entity
         createEntities(House.class, 1, 1);
-        //createEntities(Void.class, 2, 5);
         createBlocs(Bloc.class);
         createEntities(Energy.class, 5, 7);
-        createEntities(Empty.class, 10, 10);
 
     }
 
@@ -110,7 +107,13 @@ public class Map {
         int current = 0;
         int choose = Utils.random(min, max);
 
+        int trys = 0;
+
         while (current < choose) {
+            trys++;
+            if (trys >= choose * 3) {
+                break;
+            }
 
             int x = Utils.random(1, Infos.MAP_SIZE - 1);
             int y = Utils.random(1, Infos.MAP_SIZE - 1);

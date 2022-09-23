@@ -84,6 +84,8 @@
             <TextField fx:id="bottomBind" layoutX="168.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="S" />
             <TextField fx:id="leftBind" layoutX="362.0" layoutY="109.0" prefHeight="25.0" prefWidth="25.0" text="Q" />
             <TextField fx:id="rightBind" layoutX="362.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="D" />
+            <Button fx:id="gameNext" layoutX="194.0" layoutY="236.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
+            <Text fx:id="endInfos" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="600.0" />
          </children>
       </Pane>
    </center>

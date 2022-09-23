@@ -10,6 +10,7 @@ import fr.thomas.utils.Utils;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.VuePlayer;
+import fr.thomas.vue.menus.VueMenuEndGame;
 import fr.thomas.vue.menus.VueMenuGame;
 import fr.thomas.vue.menus.VueMenuMain;
 import fr.thomas.vue.menus.VueMenuOptions;
@@ -42,6 +43,8 @@ public class Controller implements Initializable {
 
     private VueMenuOptions vueMenuOptions;
 
+    private VueMenuEndGame vueMenuEndGame;
+
     private Game game;
 
     private OptionsManager optionsManager;
@@ -66,6 +69,9 @@ public class Controller implements Initializable {
     private Button options;
 
     @FXML
+    private Button gameNext;
+
+    @FXML
     private Button continueGame;
 
     @FXML
@@ -85,6 +91,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Text moveKey;
+
+    @FXML
+    private Text endInfos;
 
     @FXML
     private TextField topBind;
@@ -139,10 +148,7 @@ public class Controller implements Initializable {
 
         // Jouer
         play.setOnMouseClicked(event -> {
-            gameManager.clearLastGameMap();
-            game.getPlayer().reset();
-            gameManager.generateMap();
-            menusManager.setGameState(GameState.PLAY);
+            replay();
         });
 
         // Cancel Movement
@@ -158,6 +164,10 @@ public class Controller implements Initializable {
         // Options
         options.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.OPTIONS);
+        });
+
+        gameNext.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.MENU);
         });
 
         // Return
@@ -176,6 +186,14 @@ public class Controller implements Initializable {
         textChat.appendText(Utils.getTime() + ": " + message + "\n");
     }
 
+    public void replay() {
+        textChat.clear();
+        gameManager.clearLastGameMap();
+        game.getPlayer().reset();
+        gameManager.generateMap();
+        menusManager.setGameState(GameState.PLAY);
+    }
+
 
     private void initVues() {
         vuePlayer = new VuePlayer(getGame().getPlayer(), gameScreen);
@@ -189,9 +207,13 @@ public class Controller implements Initializable {
         vueMenuMain.addNode(play, continueGame, options);
         vueMenuMain.add();
 
-        vueMenuOptions = new VueMenuOptions(getGameScreen());
+        vueMenuOptions = new VueMenuOptions(gameScreen);
         vueMenuOptions.addNode(returnMenu, topBind, bottomBind, leftBind, rightBind, topKey, bottomKey, rightKey, leftKey);
         vueMenuOptions.add();
+
+        vueMenuEndGame = new VueMenuEndGame(gameScreen);
+        vueMenuEndGame.addNode(gameNext, endInfos);
+        vueMenuEndGame.add();
     }
 
 }

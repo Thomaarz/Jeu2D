@@ -10,11 +10,13 @@ import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.MapEntity;
+import fr.thomas.utils.Utils;
 import fr.thomas.utils.options.Options;
 import fr.thomas.utils.options.OptionsUtils;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.bloc.VueEnergy;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class KeyListener implements EventHandler<KeyEvent> {

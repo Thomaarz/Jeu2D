@@ -7,15 +7,10 @@ import fr.thomas.modele.game.Game;
 import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Localizable;
 import fr.thomas.modele.map.Map;
-import fr.thomas.modele.map.entity.Bloc;
-import fr.thomas.modele.map.entity.Energy;
-import fr.thomas.modele.map.entity.House;
+import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
 import fr.thomas.vue.VueElement;
-import fr.thomas.vue.bloc.VueBloc;
-import fr.thomas.vue.bloc.VueEnergy;
-import fr.thomas.vue.bloc.VueHouse;
-import fr.thomas.vue.bloc.VueVoid;
+import fr.thomas.vue.bloc.*;
 
 public class GameManager {
 
@@ -78,6 +73,8 @@ public class GameManager {
                 vueElement = new VueHouse(element, controller.getGameScreen());
             } else if (element instanceof Void) {
                 vueElement = new VueVoid(element, controller.getGameScreen());
+            } else if (element instanceof Empty) {
+                vueElement = new VueEmpty(element, controller.getGameScreen());
             }
 
             if (vueElement != null) {
