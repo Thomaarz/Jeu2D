@@ -43,6 +43,8 @@ public class KeyListener implements EventHandler<KeyEvent> {
             movement = Movement.LEFT;
         } else if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_RIGHT))) {
             movement = Movement.RIGHT;
+        } else if (event.getCode() == KeyCode.ESCAPE && controller.getGame().getGameState() == GameState.PLAY) {
+            controller.getMenusManager().setGameState(GameState.PAUSE);
         }
 
         if (movement == null) {
@@ -53,10 +55,12 @@ public class KeyListener implements EventHandler<KeyEvent> {
             return;
         }
 
+
         MapEntity element = map.getElement(player.getX() + movement.getX(), player.getY() + movement.getY());
 
         MovementResult result = MovementResult.ALLOW;
         if (element != null) {
+            System.out.println(element);
             VueElement vueElement = controller.getVueElements().get("entity" + element.getId());
             result = element.onPass(player, vueElement);
             if (vueElement instanceof VueEnergy) {

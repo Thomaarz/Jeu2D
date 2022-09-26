@@ -1,15 +1,10 @@
 package fr.thomas;
 
-import fr.thomas.utils.Utils;
-import fr.thomas.vue.Donnee;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application {
 

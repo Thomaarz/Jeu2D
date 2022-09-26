@@ -46,7 +46,7 @@
       <Pane fx:id="gameScreen" BorderPane.alignment="CENTER">
          <children>
             <ProgressBar fx:id="powerBar" layoutX="471.0" layoutY="331.0" prefHeight="20.0" prefWidth="115.0" progress="1.0" visible="false" />
-            <Button fx:id="play" layoutX="190.0" layoutY="191.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Nouvelle Partie" visible="false" />
+            <Button fx:id="play" layoutX="190.0" layoutY="150.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Nouvelle Partie" />
             <Button fx:id="cancelMovement" layoutX="408.0" layoutY="360.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="177.0" text="Annuler déplacement" visible="false" />
             <Text fx:id="textInfo" layoutX="-6.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Options" textAlignment="CENTER" wrappingWidth="600.0">
                <font>
@@ -57,7 +57,7 @@
             <Text fx:id="powerKey" layoutX="410.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energie" visible="false" wrappingWidth="49.29035949707031" />
             <Text fx:id="moveKey" layoutX="410.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Déplacements:" visible="false" wrappingWidth="98.15625762939453" />
             <Text fx:id="moveValue" layoutX="508.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" visible="false" wrappingWidth="75.48697900772095" />
-            <Button fx:id="continueGame" layoutX="190.0" layoutY="122.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Reprendre" visible="false" />
+            <Button fx:id="continueGame" layoutX="190.0" layoutY="150.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Reprendre" />
             <Button fx:id="options" layoutX="190.0" layoutY="263.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Options" visible="false" />
             <Button fx:id="returnMenu" layoutX="190.0" layoutY="304.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Retour" />
             <Text fx:id="topKey" layoutX="122.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Haut" wrappingWidth="30.46354103088379">
@@ -84,8 +84,9 @@
             <TextField fx:id="bottomBind" layoutX="168.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="S" />
             <TextField fx:id="leftBind" layoutX="362.0" layoutY="109.0" prefHeight="25.0" prefWidth="25.0" text="Q" />
             <TextField fx:id="rightBind" layoutX="362.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="D" />
-            <Button fx:id="gameNext" layoutX="194.0" layoutY="236.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
-            <Text fx:id="endInfos" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="600.0" />
+            <Button fx:id="gameNext" layoutX="190.0" layoutY="236.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
+            <Text fx:id="endInfos" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600.0" />
+            <Button fx:id="saveGame" layoutX="190.0" layoutY="221.0" prefHeight="55.0" prefWidth="220.0" text="Sauvegarder" />
          </children>
       </Pane>
    </center>

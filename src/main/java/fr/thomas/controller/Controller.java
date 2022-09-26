@@ -10,10 +10,7 @@ import fr.thomas.utils.Utils;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.VuePlayer;
-import fr.thomas.vue.menus.VueMenuEndGame;
-import fr.thomas.vue.menus.VueMenuGame;
-import fr.thomas.vue.menus.VueMenuMain;
-import fr.thomas.vue.menus.VueMenuOptions;
+import fr.thomas.vue.menus.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -45,6 +42,8 @@ public class Controller implements Initializable {
 
     private VueMenuEndGame vueMenuEndGame;
 
+    private VueMenuPause vueMenuPause;
+
     private Game game;
 
     private OptionsManager optionsManager;
@@ -58,6 +57,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Button play;
+
+    @FXML
+    private Button saveGame;
 
     @FXML
     private Button cancelMovement;
@@ -146,6 +148,11 @@ public class Controller implements Initializable {
         // PowerBar
         powerBar.progressProperty().bind(game.getPlayer().getPowerProperty());
 
+        // Continue
+        continueGame.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.PLAY);
+        });
+
         // Jouer
         play.setOnMouseClicked(event -> {
             replay();
@@ -214,6 +221,10 @@ public class Controller implements Initializable {
         vueMenuEndGame = new VueMenuEndGame(gameScreen);
         vueMenuEndGame.addNode(gameNext, endInfos);
         vueMenuEndGame.add();
+
+        vueMenuPause = new VueMenuPause(gameScreen);
+        vueMenuPause.addNode(continueGame, saveGame);
+        vueMenuPause.add();
     }
 
 }
