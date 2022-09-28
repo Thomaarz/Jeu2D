@@ -44,6 +44,8 @@ public class Controller implements Initializable {
 
     private VueMenuPause vueMenuPause;
 
+    private VueMenuHistory vueMenuHistory;
+
     private Game game;
 
     private OptionsManager optionsManager;
@@ -75,6 +77,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Button continueGame;
+
+    @FXML
+    private Button history;
 
     @FXML
     private Text powerKey;
@@ -173,6 +178,12 @@ public class Controller implements Initializable {
             menusManager.setGameState(GameState.OPTIONS);
         });
 
+        // Historique
+        history.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.HISTORY);
+        });
+
+
         gameNext.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.MENU);
         });
@@ -211,7 +222,7 @@ public class Controller implements Initializable {
         vueMenuGame.add();
 
         vueMenuMain = new VueMenuMain(gameScreen);
-        vueMenuMain.addNode(play, continueGame, options);
+        vueMenuMain.addNode(play, continueGame, options, history);
         vueMenuMain.add();
 
         vueMenuOptions = new VueMenuOptions(gameScreen);
@@ -225,6 +236,10 @@ public class Controller implements Initializable {
         vueMenuPause = new VueMenuPause(gameScreen);
         vueMenuPause.addNode(continueGame, saveGame);
         vueMenuPause.add();
+
+        vueMenuHistory = new VueMenuHistory(gameScreen);
+        vueMenuHistory.addNode(returnMenu);
+        vueMenuHistory.add();
     }
 
 }

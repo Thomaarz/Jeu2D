@@ -60,7 +60,6 @@ public class KeyListener implements EventHandler<KeyEvent> {
 
         MovementResult result = MovementResult.ALLOW;
         if (element != null) {
-            System.out.println(element);
             VueElement vueElement = controller.getVueElements().get("entity" + element.getId());
             result = element.onPass(player, vueElement);
             if (vueElement instanceof VueEnergy) {

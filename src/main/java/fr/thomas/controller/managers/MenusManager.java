@@ -18,10 +18,11 @@ public class MenusManager {
 
         controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
-        controller.getVueMenuMain().show();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
         controller.getVueMenuPause().hide();
+        controller.getVueMenuHistory().hide();
+        controller.getVueMenuMain().show();
 
         controller.getTextInfo().setText("Menu");
         controller.getTextInfo().setVisible(true);
@@ -34,12 +35,13 @@ public class MenusManager {
             vueElement.show();
         });
 
-        controller.getVuePlayer().show();
-        controller.getVueMenuGame().show();
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
         controller.getVueMenuPause().hide();
+        controller.getVuePlayer().show();
+        controller.getVueMenuHistory().hide();
+        controller.getVueMenuGame().show();
 
         controller.getTextInfo().setVisible(false);
     }
@@ -52,11 +54,29 @@ public class MenusManager {
         controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
         controller.getVueMenuMain().hide();
-        controller.getVueMenuOptions().show();
         controller.getVueMenuEndGame().hide();
         controller.getVueMenuPause().hide();
+        controller.getVueMenuHistory().hide();
+        controller.getVueMenuOptions().show();
 
         controller.getTextInfo().setText("Options");
+        controller.getTextInfo().setVisible(true);
+    }
+
+    public void openHistoryMenu() {
+        controller.getVueElements().forEach((s, vueElement) -> {
+            vueElement.hide();
+        });
+
+        controller.getVuePlayer().hide();
+        controller.getVueMenuGame().hide();
+        controller.getVueMenuMain().hide();
+        controller.getVueMenuEndGame().hide();
+        controller.getVueMenuPause().hide();
+        controller.getVueMenuOptions().hide();
+        controller.getVueMenuHistory().show();
+
+        controller.getTextInfo().setText("Historique");
         controller.getTextInfo().setVisible(true);
     }
 
@@ -69,8 +89,9 @@ public class MenusManager {
         controller.getVueMenuGame().hide();
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
-        controller.getVueMenuEndGame().show();
         controller.getVueMenuPause().hide();
+        controller.getVueMenuHistory().hide();
+        controller.getVueMenuEndGame().show();
 
         controller.getTextInfo().setText("Fin de Partie");
         controller.getEndInfos().setText("WAOUUUU");
@@ -89,6 +110,7 @@ public class MenusManager {
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
+        controller.getVueMenuHistory().hide();
         controller.getVueMenuPause().show();
 
         controller.getTextInfo().setText("Pause");
@@ -113,6 +135,9 @@ public class MenusManager {
                 break;
             case OPTIONS:
                 openOptionsMenu();
+                break;
+            case HISTORY:
+                openHistoryMenu();
                 break;
 
         }

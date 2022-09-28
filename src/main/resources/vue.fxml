@@ -58,7 +58,7 @@
             <Text fx:id="moveKey" layoutX="410.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Déplacements:" visible="false" wrappingWidth="98.15625762939453" />
             <Text fx:id="moveValue" layoutX="508.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" visible="false" wrappingWidth="75.48697900772095" />
             <Button fx:id="continueGame" layoutX="190.0" layoutY="150.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Reprendre" />
-            <Button fx:id="options" layoutX="190.0" layoutY="263.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Options" visible="false" />
+            <Button fx:id="options" layoutX="190.0" layoutY="221.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Options" />
             <Button fx:id="returnMenu" layoutX="190.0" layoutY="304.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Retour" />
             <Text fx:id="topKey" layoutX="122.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Haut" wrappingWidth="30.46354103088379">
                <font>
@@ -87,6 +87,7 @@
             <Button fx:id="gameNext" layoutX="190.0" layoutY="236.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
             <Text fx:id="endInfos" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600.0" />
             <Button fx:id="saveGame" layoutX="190.0" layoutY="221.0" prefHeight="55.0" prefWidth="220.0" text="Sauvegarder" />
+            <Button fx:id="history" layoutX="190.0" layoutY="296.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Historique" />
          </children>
       </Pane>
    </center>

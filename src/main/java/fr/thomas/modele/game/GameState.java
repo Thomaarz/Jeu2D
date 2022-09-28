@@ -6,6 +6,7 @@ public enum GameState {
     END,
     PAUSE,
     MENU,
+    HISTORY,
     OPTIONS;
 
 }
