@@ -42,15 +42,16 @@ public class Player extends Localizable {
     /**
      * Move the player in the movement
      */
-    public void move(Movement movement) {
+    public Player move(Movement movement) {
         visited.add(new Localizable(getX(), getY()));
         super.move(movement.getX(), movement.getY());
+        return this;
     }
 
     /**
      * Remove power
      */
-    public void removePower(int power) throws MovementException {
+    public Player removePower(int power) throws MovementException {
         if (this.power <= 0) {
             throw new MovementException("Aucune énergie disponible.");
         }
@@ -58,6 +59,7 @@ public class Player extends Localizable {
         this.power -= power;
 
         this.powerProperty.set(this.power / 100.0);
+        return this;
     }
 
     /**
