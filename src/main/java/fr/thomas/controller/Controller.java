@@ -4,6 +4,7 @@ import fr.thomas.controller.listeners.KeyListener;
 import fr.thomas.controller.managers.GameManager;
 import fr.thomas.controller.managers.MenusManager;
 import fr.thomas.controller.managers.OptionsManager;
+import fr.thomas.controller.tasks.EnemyTask;
 import fr.thomas.modele.game.Game;
 import fr.thomas.modele.game.GameState;
 import fr.thomas.utils.Utils;
@@ -140,6 +141,9 @@ public class Controller implements Initializable {
         // Vues
         initVues();
 
+        // Bar
+        powerBar.progressProperty().bind(game.getPlayer().getPowerProperty());
+
         // Listeners
         gameScreen.setFocusTraversable(true);
         gameScreen.setOnKeyPressed(new KeyListener(this));
@@ -150,9 +154,6 @@ public class Controller implements Initializable {
         // Chat
         textChat.setFocusTraversable(true);
 
-        // PowerBar
-        powerBar.progressProperty().bind(game.getPlayer().getPowerProperty());
-
         // Continue
         continueGame.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.PLAY);
@@ -160,7 +161,7 @@ public class Controller implements Initializable {
 
         // Jouer
         play.setOnMouseClicked(event -> {
-            replay();
+             replay();
         });
 
         // Cancel Movement

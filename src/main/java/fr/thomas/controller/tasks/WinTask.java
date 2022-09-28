@@ -2,7 +2,6 @@ package fr.thomas.controller.tasks;
 
 import fr.thomas.controller.Controller;
 import fr.thomas.modele.game.GameState;
-import fr.thomas.vue.bloc.VueHouse;
 
 public class WinTask extends GameTask {
 

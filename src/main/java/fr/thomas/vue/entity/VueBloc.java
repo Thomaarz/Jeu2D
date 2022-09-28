@@ -1,4 +1,4 @@
-package fr.thomas.vue.bloc;
+package fr.thomas.vue.entity;
 
 import fr.thomas.modele.map.Localizable;
 import fr.thomas.vue.VueElement;

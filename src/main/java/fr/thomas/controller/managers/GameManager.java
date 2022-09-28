@@ -10,7 +10,7 @@ import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
 import fr.thomas.vue.VueElement;
-import fr.thomas.vue.bloc.*;
+import fr.thomas.vue.entity.*;
 
 public class GameManager {
 
@@ -75,6 +75,8 @@ public class GameManager {
                 vueElement = new VueVoid(element, controller.getGameScreen());
             } else if (element instanceof Empty) {
                 vueElement = new VueEmpty(element, controller.getGameScreen());
+            } else if (element instanceof Enemy) {
+                vueElement = new VueEnemy(element, controller.getGameScreen());
             }
 
             if (vueElement != null) {

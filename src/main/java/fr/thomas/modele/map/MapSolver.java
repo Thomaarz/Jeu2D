@@ -1,5 +1,6 @@
 package fr.thomas.modele.map;
 
+import fr.thomas.modele.entity.Movement;
 import fr.thomas.modele.map.entity.Bloc;
 import fr.thomas.modele.map.entity.House;
 import fr.thomas.modele.map.entity.MapEntity;
@@ -19,6 +20,7 @@ public class MapSolver {
     private final Map map;
 
     private List<Localizable> verified = new ArrayList<>();
+
 
     public boolean canGo(Localizable current, Localizable expected) {
         List<Localizable> nexts = getNextCases(current);
@@ -49,7 +51,7 @@ public class MapSolver {
         List<Localizable> f = new ArrayList<>();
 
         nexts.forEach(n -> {
-            if (!verified.contains(n) && !(map.getElement(n.getX(), n.getY()) instanceof Bloc) && !(map.getElement(n.getX(), n.getY()) instanceof Void)) {
+            if (n != null && !verified.contains(n) && !(map.getElement(n.getX(), n.getY()) instanceof Bloc) && !(map.getElement(n.getX(), n.getY()) instanceof Void)) {
                 f.add(n);
             }
         });

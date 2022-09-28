@@ -5,6 +5,8 @@ import fr.thomas.modele.map.Map;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class Game {
@@ -14,6 +16,7 @@ public class Game {
     private Map map;
 
     private GameState gameState;
+
 
     public Game(Player player, Map map, GameState gameState) {
         this.player = player;

@@ -10,11 +10,10 @@ import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.MapEntity;
-import fr.thomas.utils.Utils;
 import fr.thomas.utils.options.Options;
 import fr.thomas.utils.options.OptionsUtils;
 import fr.thomas.vue.VueElement;
-import fr.thomas.vue.bloc.VueEnergy;
+import fr.thomas.vue.entity.VueEnergy;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -45,6 +44,8 @@ public class KeyListener implements EventHandler<KeyEvent> {
             movement = Movement.RIGHT;
         } else if (event.getCode() == KeyCode.ESCAPE && controller.getGame().getGameState() == GameState.PLAY) {
             controller.getMenusManager().setGameState(GameState.PAUSE);
+        } else if (event.getCode() == KeyCode.B) {
+
         }
 
         if (movement == null) {

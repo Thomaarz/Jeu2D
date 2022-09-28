@@ -56,4 +56,12 @@ public class Localizable {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Localizable{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

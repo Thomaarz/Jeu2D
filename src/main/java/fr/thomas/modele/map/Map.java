@@ -42,6 +42,7 @@ public class Map {
         // Create a random amount of entity
         createEntities(House.class, 1, 1);
         createBlocs(Bloc.class);
+        createEntities(Enemy.class, 1, 3);
         createEntities(Energy.class, 5, 7);
 
     }
