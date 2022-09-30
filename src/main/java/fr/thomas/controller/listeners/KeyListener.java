@@ -21,13 +21,9 @@ import javafx.scene.input.KeyEvent;
 public class KeyListener implements EventHandler<KeyEvent> {
 
     private Controller controller;
-    private Map map;
-    private Player player;
 
     public KeyListener(Controller controller) {
         this.controller = controller;
-        this.map = controller.getGame().getMap();
-        this.player = controller.getGame().getPlayer();
     }
 
     @Override
@@ -42,7 +38,7 @@ public class KeyListener implements EventHandler<KeyEvent> {
             movement = Movement.LEFT;
         } else if (key.equalsIgnoreCase(OptionsUtils.optionValues.get(Options.MOVE_RIGHT))) {
             movement = Movement.RIGHT;
-        } else if (event.getCode() == KeyCode.ESCAPE && controller.getGame().getGameState() == GameState.PLAY) {
+        } else if (event.getCode() == KeyCode.ESCAPE && controller.getGameState() == GameState.PLAY) {
             controller.getMenusManager().setGameState(GameState.PAUSE);
         } else if (event.getCode() == KeyCode.B) {
 
@@ -52,17 +48,28 @@ public class KeyListener implements EventHandler<KeyEvent> {
             return;
         }
 
-        if (controller.getGame().getGameState() != GameState.PLAY) {
+        if (controller.getGameState() != GameState.PLAY) {
             return;
         }
 
+        if (controller.getGame() == null) {
+            return;
+        }
+
+        Player player = controller.getGame().getPlayer();
+        Map map = controller.getGame().getMap();
 
         MapEntity element = map.getElement(player.getX() + movement.getX(), player.getY() + movement.getY());
 
         MovementResult result = MovementResult.ALLOW;
         if (element != null) {
             VueElement vueElement = controller.getVueElements().get("entity" + element.getId());
-            result = element.onPass(player, vueElement);
+            try {
+                result = element.onPass(player, vueElement);
+            } catch (MovementException e) {
+                controller.addChatLine(e.getMessage());
+                new LoseTask(controller).start();
+            }
             if (vueElement instanceof VueEnergy) {
                 controller.getVueElements().remove(vueElement.getId());
                 controller.getGame().getMap().getMapEntities().remove(element);

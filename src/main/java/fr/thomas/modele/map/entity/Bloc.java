@@ -1,5 +1,6 @@
 package fr.thomas.modele.map.entity;
 
+import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.entity.MovementResult;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.vue.VueElement;
@@ -11,7 +12,8 @@ public class Bloc extends MapEntity {
     }
 
     @Override
-    public MovementResult onPass(Player player, VueElement vueElement) {
+    public MovementResult onPass(Player player, VueElement vueElement) throws MovementException {
+        player.removePower(10);
         return MovementResult.DENY;
     }
 }

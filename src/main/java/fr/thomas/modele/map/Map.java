@@ -92,13 +92,6 @@ public class Map {
     }
 
     /**
-     * Reset the map (entities, create new map, and reset player)
-     */
-    public void reset() {
-        this.mapEntities = new ArrayList<>();
-    }
-
-    /**
      * Function to create random amount of entities
      * @param e: the entity type to create ({@link House}, {@link Bloc}, {@link Void}, {@link Energy})
      * @param min: the min amount of entity to create

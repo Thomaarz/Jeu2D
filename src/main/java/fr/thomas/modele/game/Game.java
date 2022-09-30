@@ -2,26 +2,39 @@ package fr.thomas.modele.game;
 
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.map.Map;
+import fr.thomas.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
 public class Game {
 
+    private String name = "Game-" + Utils.random(0, 10000);
+
+    private String lore;
+
     private Player player;
 
     private Map map;
 
-    private GameState gameState;
-
-
-    public Game(Player player, Map map, GameState gameState) {
+    public Game(String name, Player player, Map map) {
+        this.name = name;
+        this.lore = "Partie - " + Utils.getGameTime();
         this.player = player;
         this.map = map;
-        this.gameState = gameState;
     }
 
+
+    public Game(Player player, Map map) {
+        this.lore = "Partie - " + Utils.getGameTime();
+        this.player = player;
+        this.map = map;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

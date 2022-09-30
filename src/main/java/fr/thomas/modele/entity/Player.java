@@ -21,7 +21,7 @@ public class Player extends Localizable {
 
     private int power = DEFAULT_POWER;
 
-    private DoubleProperty powerProperty = new SimpleDoubleProperty(power / 100.0);
+    private SimpleDoubleProperty powerProperty = new SimpleDoubleProperty(power / 100.0);
 
     private int powerUsed = 0;
 

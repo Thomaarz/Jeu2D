@@ -1,5 +1,7 @@
 package fr.thomas.modele.map;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import fr.thomas.Infos;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -18,8 +20,11 @@ public class Localizable {
     private int x;
     private int y;
 
-    private DoubleProperty xProperty;
-    private DoubleProperty yProperty;
+
+    private SimpleDoubleProperty xProperty;
+
+    private SimpleDoubleProperty yProperty;
+
 
     public Localizable(int x, int y) {
         this.id = idAll++;

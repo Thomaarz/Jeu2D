@@ -16,7 +16,6 @@ public class MenusManager {
             vueElement.hide();
         });
 
-        controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
@@ -27,7 +26,6 @@ public class MenusManager {
         controller.getTextInfo().setText("Menu");
         controller.getTextInfo().setVisible(true);
 
-        controller.getContinueGame().setVisible(controller.getGame().getMap().getMapEntities().size() > 0);
     }
 
     public void openGameMenu() {
@@ -39,8 +37,8 @@ public class MenusManager {
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
         controller.getVueMenuPause().hide();
-        controller.getVuePlayer().show();
         controller.getVueMenuHistory().hide();
+        controller.getGameManager().getVuePlayer().show();
         controller.getVueMenuGame().show();
 
         controller.getTextInfo().setVisible(false);
@@ -51,7 +49,6 @@ public class MenusManager {
             vueElement.hide();
         });
 
-        controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
         controller.getVueMenuMain().hide();
         controller.getVueMenuEndGame().hide();
@@ -68,7 +65,6 @@ public class MenusManager {
             vueElement.hide();
         });
 
-        controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
         controller.getVueMenuMain().hide();
         controller.getVueMenuEndGame().hide();
@@ -85,8 +81,8 @@ public class MenusManager {
             vueElement.hide();
         });
 
-        controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
+        controller.getGameManager().getVuePlayer().hide();
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuPause().hide();
@@ -96,8 +92,6 @@ public class MenusManager {
         controller.getTextInfo().setText("Fin de Partie");
         controller.getEndInfos().setText("WAOUUUU");
         controller.getTextInfo().setVisible(true);
-
-        controller.getGame().getMap().reset();
     }
 
     public void openPauseGameMenu() {
@@ -105,8 +99,8 @@ public class MenusManager {
             vueElement.hide();
         });
 
-        controller.getVuePlayer().hide();
         controller.getVueMenuGame().hide();
+        controller.getGameManager().getVuePlayer().hide();
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
         controller.getVueMenuEndGame().hide();
@@ -118,7 +112,7 @@ public class MenusManager {
     }
 
     public void setGameState(GameState gameState) {
-        controller.getGame().setGameState(gameState);
+        controller.setGameState(gameState);
 
         switch (gameState) {
             case PLAY:

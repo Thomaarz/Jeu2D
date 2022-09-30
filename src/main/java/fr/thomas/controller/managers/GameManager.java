@@ -10,11 +10,16 @@ import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
 import fr.thomas.vue.VueElement;
+import fr.thomas.vue.VuePlayer;
 import fr.thomas.vue.entity.*;
+import lombok.Getter;
 
 public class GameManager {
 
     private Controller controller;
+
+    @Getter
+    private VuePlayer vuePlayer;
 
     public GameManager(Controller controller) {
         this.controller = controller;
@@ -29,8 +34,12 @@ public class GameManager {
         Player player = new Player(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
         Map map = new Map();
 
+        // Vues
+        vuePlayer = new VuePlayer(player, controller.getGameScreen());
+        vuePlayer.add();
+
         // Create Game
-        controller.setGame(new Game(player, map, GameState.MENU));
+        controller.setGame(new Game(player, map));
 
         // Clear Texts
         controller.getTextChat().clear();
@@ -38,7 +47,29 @@ public class GameManager {
         controller.getMoveValue().setText("0");
 
         // Add Info in Chat
+        controller.getTextChat().clear();
         controller.addChatLine("Nouvelle partie !");
+
+        // Bind
+        controller.getPowerBar().progressProperty().bind(player.getPowerProperty());
+    }
+
+    public void createGameFromSave(Game game) {
+        // Vues
+        vuePlayer = new VuePlayer(game.getPlayer(), controller.getGameScreen());
+        vuePlayer.add();
+
+        // Clear Texts
+        controller.getTextChat().clear();
+        controller.getTextInfo().setText(null);
+        controller.getMoveValue().setText("0");
+
+        // Add Info in Chat
+        controller.getTextChat().clear();
+        controller.addChatLine("Nouvelle partie !");
+
+        // Bind
+        controller.getPowerBar().progressProperty().bind(game.getPlayer().getPowerProperty());
     }
 
     public void generateMap() {
@@ -53,8 +84,6 @@ public class GameManager {
     public void clearLastGameMap() {
         controller.getVueElements().forEach((s, vueElement) -> controller.getGameScreen().getChildren().remove(vueElement.getImageView()));
         controller.getVueElements().clear();
-
-        controller.getGame().getMap().reset();
     }
 
     /**
@@ -85,5 +114,4 @@ public class GameManager {
             }
         }
     }
-
 }
