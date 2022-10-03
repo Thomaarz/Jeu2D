@@ -1,6 +1,7 @@
 package fr.thomas.modele.map.save;
 
 import com.google.gson.Gson;
+import fr.thomas.modele.entity.Movement;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.Game;
 import fr.thomas.modele.map.Map;
@@ -9,6 +10,7 @@ import fr.thomas.modele.map.entity.Energy;
 import fr.thomas.modele.map.entity.House;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -23,11 +25,13 @@ public class SaveUtils {
     public static List<String> getSavedGames() {
         File folder = new File("data/game/");
 
+        folder.mkdirs();
+
         return Arrays.asList(folder.listFiles()).stream().map(file -> file.getName()).collect(Collectors.toList());
     }
 
     public static Game loadSave(String name) {
-        String path = "data/game/" + name + ".txt";
+        String path = "data/game/" + name;
 
         Player player = null;
         Map map = new Map();
@@ -44,6 +48,9 @@ public class SaveUtils {
                 if (key.equalsIgnoreCase("player")) {
                     player = new Player(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
                     player.setPower(Integer.parseInt(values[2]));
+                    for (String movement : values[3].split("-")) {
+                        player.addMovement(Movement.get(Integer.parseInt(movement)));
+                    }
                 } else if (key.equalsIgnoreCase("house")) {
                     map.getMapEntities().add(new House(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
                 } else if (key.equalsIgnoreCase("energy")) {
@@ -83,7 +90,12 @@ public class SaveUtils {
 
         try {
             PrintWriter writer = new PrintWriter(path, "UTF-8");
-            writer.println("Player=" + game.getPlayer().getX() + ";" + game.getPlayer().getY() + ";" + game.getPlayer().getPower());
+            StringBuilder movements = new StringBuilder();
+            for (int i = 0; i < game.getPlayer().getMovementsHistory().size(); i++) {
+                Movement movement = game.getPlayer().getMovementsHistory().get(i);
+                movements.append(movement.getId()).append(i - 1 == game.getPlayer().getMovementsHistory().size() ? "" : "-");
+            }
+            writer.println("Player=" + game.getPlayer().getX() + ";" + game.getPlayer().getY() + ";" + game.getPlayer().getPower() + ";" + movements);
             game.getMap().getMapEntities().forEach(entity -> {
                 writer.println(entity.getClass().getName().substring(entity.getClass().getName().lastIndexOf('.') + 1) + "=" + entity.getX() + ";" + entity.getY());
             });
@@ -91,5 +103,11 @@ public class SaveUtils {
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void delete(String game) {
+        File file = new File("data/game/" + game);
+
+        file.delete();
     }
 }

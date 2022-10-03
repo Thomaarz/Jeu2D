@@ -83,6 +83,9 @@ public class Controller implements Initializable {
     private Button history;
 
     @FXML
+    private Button menu;
+
+    @FXML
     private Text powerKey;
 
     @FXML
@@ -127,8 +130,6 @@ public class Controller implements Initializable {
     @FXML
     private Text leftKey;
 
-    private Game test;
-
     @FXML
     private ListView<Game> historyList;
 
@@ -137,11 +138,10 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         // Saves
-        test = SaveUtils.loadSave("Game-1");
-        if (test != null) {
-            System.out.println(test.getMap().getMapEntities().size());
-        }
-
+        SaveUtils.getSavedGames().forEach(s -> {
+            Game g = SaveUtils.loadSave(s);
+            historyList.getItems().add(g);
+        });
         // Managers
         optionsManager = new OptionsManager(this);
         optionsManager.load();
@@ -166,6 +166,10 @@ public class Controller implements Initializable {
             menusManager.setGameState(GameState.PLAY);
         });
 
+        menu.setOnMouseClicked(event -> {
+            menusManager.setGameState(GameState.MENU);
+        });
+
         // Jouer
         play.setOnMouseClicked(event -> {
             // NEW GAME
@@ -174,14 +178,6 @@ public class Controller implements Initializable {
 
             gameManager.generateMap();
             menusManager.setGameState(GameState.PLAY);
-
-            /*
-            // FROM SAVE
-             this.game = test;
-            gameManager.createGameFromSave(game);
-            gameManager.placeElements();
-            menusManager.setGameState(GameState.PLAY);
-             */
 
         });
 
@@ -205,6 +201,25 @@ public class Controller implements Initializable {
             menusManager.setGameState(GameState.HISTORY);
         });
 
+        historyList.setOnMouseClicked(event -> {
+            game = SaveUtils.loadSave(historyList.getSelectionModel().getSelectedItem().getName());
+
+            if (game == null) {
+                return;
+            }
+
+            if (event.isControlDown()) {
+                SaveUtils.delete(game.getName());
+                historyList.getItems().remove(game);
+                historyList.refresh();
+                return;
+            }
+
+            gameManager.createGameFromSave(game);
+            gameManager.placeElements();
+            menusManager.setGameState(GameState.PLAY);
+        });
+
 
         gameNext.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.MENU);
@@ -213,15 +228,13 @@ public class Controller implements Initializable {
         // Return
         returnMenu.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.MENU);
-
-            // TODO
             optionsManager.save();
         });
 
         saveGame.setOnMouseClicked(event -> {
-            test = game;
-
-            SaveUtils.save("Game-1", test);
+            SaveUtils.save("Game-" + Utils.random(0, 10000), game);
+            historyList.getItems().add(game);
+            historyList.refresh();
         });
     }
 
@@ -251,7 +264,7 @@ public class Controller implements Initializable {
         vueMenuEndGame.add();
 
         vueMenuPause = new VueMenuPause(gameScreen);
-        vueMenuPause.addNode(continueGame, saveGame);
+        vueMenuPause.addNode(continueGame, saveGame, menu);
         vueMenuPause.add();
 
         vueMenuHistory = new VueMenuHistory(gameScreen);

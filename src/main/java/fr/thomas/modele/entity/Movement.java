@@ -7,11 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Movement {
 
-    TOP(0, -1),
-    BOTTOM(0, 1),
-    LEFT(-1, 0),
-    RIGHT(1, 0);
+    TOP(0, 0, -1),
+    BOTTOM(1, 0, 1),
+    LEFT(2, -1, 0),
+    RIGHT(3, 1, 0);
 
+    private final int id;
     private final int x;
     private final int y;
 
@@ -20,6 +21,15 @@ public enum Movement {
      */
     public Movement getOpposite() {
         return this == TOP ? BOTTOM : this == BOTTOM ? TOP : this == RIGHT ? LEFT : RIGHT;
+    }
+
+    public static Movement get(int id) {
+        for (Movement movement : values()) {
+            if (movement.getId() == id) {
+                return movement;
+            }
+        }
+        return null;
     }
 
 }

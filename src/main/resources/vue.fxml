@@ -90,6 +90,7 @@
             <Button fx:id="saveGame" layoutX="190.0" layoutY="221.0" prefHeight="55.0" prefWidth="220.0" text="Sauvegarder" />
             <Button fx:id="history" layoutX="190.0" layoutY="296.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Historique" />
             <ListView fx:id="historyList" layoutX="204.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="menu" layoutX="190.0" layoutY="291.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" text="Menu" />
          </children>
       </Pane>
    </center>

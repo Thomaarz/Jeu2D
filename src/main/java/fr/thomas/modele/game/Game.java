@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class Game {
 
-    private String name = "Game-" + Utils.random(0, 10000);
+    private String name = "Game-" + Utils.random(0, 10000) + ".txt";
 
     private String lore;
 
