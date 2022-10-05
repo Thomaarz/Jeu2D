@@ -18,8 +18,6 @@ public class LoseTask extends GameTask {
                 "");
 
         controller.getGame().setEnd(true);
-        SaveUtils.save(controller.getGame());
-        controller.refreshHistory();
 
         new VisitedTasks(controller, true).start();
     }

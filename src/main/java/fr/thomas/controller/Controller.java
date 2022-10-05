@@ -95,6 +95,9 @@ public class Controller implements Initializable {
     private Button menu;
 
     @FXML
+    private Button saveEndGame;
+
+    @FXML
     private Text powerKey;
 
     @FXML
@@ -289,6 +292,9 @@ public class Controller implements Initializable {
         saveGame.setOnMouseClicked(event -> {
             gameManager.save(game);
         });
+        saveEndGame.setOnMouseClicked(event -> {
+            gameManager.save(game);
+        });
     }
 
     /**
@@ -316,7 +322,7 @@ public class Controller implements Initializable {
         vueMenuOptions.add();
 
         vueMenuEndGame = new VueMenuEndGame(gameScreen);
-        vueMenuEndGame.addNode(gameNext, endInfos);
+        vueMenuEndGame.addNode(gameNext, endInfos, saveEndGame);
         vueMenuEndGame.add();
 
         vueMenuPause = new VueMenuPause(gameScreen);

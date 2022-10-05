@@ -126,6 +126,10 @@ public class MenusManager {
     public void setGameState(GameState gameState) {
         controller.setGameState(gameState);
 
+        if (controller.getTask() != null) {
+            controller.getTask().stop();
+        }
+
         switch (gameState) {
             case PLAY:
                 openGameMenu();
