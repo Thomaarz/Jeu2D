@@ -34,6 +34,14 @@ public class MenusManager {
             vueElement.show();
         });
 
+        controller.getVueMenuMain().hide();
+        controller.getVueMenuOptions().hide();
+        controller.getVueMenuEndGame().hide();
+        controller.getVueMenuPause().hide();
+        controller.getVueMenuHistory().hide();
+        controller.getGameManager().getVuePlayer().show();
+        controller.getVueMenuGame().show();
+
         if (controller.getGame().isEnd()) {
             controller.getResetReview().setVisible(true);
             controller.getAnimateReview().setVisible(true);
@@ -43,14 +51,6 @@ public class MenusManager {
             controller.getAnimateReview().setVisible(false);
             controller.getAnimateSpeedReview().setVisible(false);
         }
-
-        controller.getVueMenuMain().hide();
-        controller.getVueMenuOptions().hide();
-        controller.getVueMenuEndGame().hide();
-        controller.getVueMenuPause().hide();
-        controller.getVueMenuHistory().hide();
-        controller.getGameManager().getVuePlayer().show();
-        controller.getVueMenuGame().show();
 
         controller.getTextInfo().setVisible(false);
     }
@@ -126,6 +126,7 @@ public class MenusManager {
     public void setGameState(GameState gameState) {
         controller.setGameState(gameState);
 
+        // Cancel task when switch menu
         if (controller.getTask() != null) {
             controller.getTask().stop();
         }

@@ -32,6 +32,10 @@ public class Player extends Localizable {
         super(x, y);
     }
 
+    /**
+     * Remove power and set to powerproperty
+     * @param power: the amount of power to remove
+     */
     public void setPower(int power) {
         this.power = power;
         this.powerProperty.set(this.power / 100.0);

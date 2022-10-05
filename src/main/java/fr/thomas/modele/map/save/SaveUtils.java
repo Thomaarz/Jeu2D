@@ -104,7 +104,6 @@ public class SaveUtils {
             PrintWriter writer = new PrintWriter(path, "UTF-8");
             StringBuilder movements = new StringBuilder();
             for (int i = 0; i < game.getPlayer().getMovementsHistory().size(); i++) {
-                System.out.println(i);
                 Movement movement = game.getPlayer().getMovementsHistory().get(i);
                 movements.append(movement.getId()).append(i == game.getPlayer().getMovementsHistory().size() ? "" : "-");
             }

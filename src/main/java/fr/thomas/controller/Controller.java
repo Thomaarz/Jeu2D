@@ -240,6 +240,9 @@ public class Controller implements Initializable {
         });
 
         historyList.setOnMouseClicked(event -> {
+            if (historyList.getSelectionModel().getSelectedItem() == null) {
+                return;
+            }
             game = SaveUtils.loadSave(historyList.getSelectionModel().getSelectedItem().getName());
 
             if (game == null) {

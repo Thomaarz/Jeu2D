@@ -62,7 +62,7 @@ public class GameManager {
         // Clear Texts
         controller.getTextChat().clear();
         controller.getTextInfo().setText(null);
-        controller.getMoveValue().setText("0");
+        controller.getMoveValue().setText(String.valueOf(game.getPlayer().getMovementsHistory().size()));
 
         // Add Info in Chat
         controller.getTextChat().clear();
