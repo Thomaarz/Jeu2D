@@ -1,6 +1,5 @@
 package fr.thomas.modele.entity;
 
-import fr.thomas.Infos;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.map.Localizable;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -115,18 +114,6 @@ public class Player extends Localizable {
 
         // Give Power
         addPower(POWER_LOSS);
-    }
-
-    /**
-     * Reset the player stats (for replay)
-     */
-    public void reset() {
-        set(Infos.MAP_SIZE / 2, Infos.MAP_SIZE / 2);
-        setPower(Player.DEFAULT_POWER);
-        movementsHistory = new ArrayList<>();
-        visited = new ArrayList<>();
-        canceledMovements = 0;
-        powerUsed = 0;
     }
 
     /**

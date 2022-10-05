@@ -5,6 +5,8 @@ import fr.thomas.controller.managers.GameManager;
 import fr.thomas.controller.managers.MenusManager;
 import fr.thomas.controller.managers.OptionsManager;
 import fr.thomas.controller.tasks.EnemyTask;
+import fr.thomas.controller.tasks.GameTask;
+import fr.thomas.controller.tasks.VisitedTasks;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.Game;
 import fr.thomas.modele.game.GameState;
@@ -22,13 +24,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Getter
@@ -137,9 +142,29 @@ public class Controller implements Initializable {
     @FXML
     private ListView<Game> historyList;
 
+    @FXML
+    private CheckBox autoSave;
+
+    @FXML
+    private Button resetReview;
+
+    @FXML
+    private Button animateReview;
+
+    private GameTask task;
+
+    @FXML
+    private Slider animateSpeedReview;
+
+    @FXML
+    private ImageView background;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // Task
+        task = null;
 
         // History
         refreshHistory();
@@ -183,8 +208,16 @@ public class Controller implements Initializable {
 
         });
 
+        // Slider
+        animateSpeedReview.valueProperty().addListener((obs, oldval, newVal) ->
+                animateSpeedReview.setValue(newVal.intValue()));
+
         // Cancel Movement
         cancelMovement.setOnMouseClicked(event -> {
+            if (game.isEnd()) {
+                addChatLine("Impossible, partie terminée !");
+                return;
+            }
             try {
                 game.getPlayer().cancelMovement(1);
                 addChatLine("Retour en arrière !");
@@ -220,7 +253,7 @@ public class Controller implements Initializable {
             gameManager.createGameFromSave(game);
             gameManager.placeElements();
             if (game.isEnd()) {
-                placeVisiteds();
+                new VisitedTasks(this, false).start();
             }
             menusManager.setGameState(GameState.PLAY);
         });
@@ -230,6 +263,23 @@ public class Controller implements Initializable {
             menusManager.setGameState(GameState.MENU);
         });
 
+        resetReview.setOnMouseClicked(event -> {
+            if (task != null) {
+                task.stop();
+            }
+            removeVisiteds();
+            addChatLine("Animation réinitialisé !");
+        });
+
+        animateReview.setOnMouseClicked(event -> {
+            if (task != null) {
+                addChatLine("Impossible, une animation est en cours !");
+                return;
+            }
+            removeVisiteds();
+            new VisitedTasks(this, false).start();
+        });
+
         // Return
         returnMenu.setOnMouseClicked(event -> {
             menusManager.setGameState(GameState.MENU);
@@ -237,8 +287,7 @@ public class Controller implements Initializable {
         });
 
         saveGame.setOnMouseClicked(event -> {
-            SaveUtils.save(game);
-            refreshHistory();
+            gameManager.save(game);
         });
     }
 
@@ -250,17 +299,20 @@ public class Controller implements Initializable {
     }
 
 
+    /**
+     * Create view and add Node to each view
+     */
     private void initVues() {
         vueMenuGame = new VueMenuGame(gameScreen);
-        vueMenuGame.addNode(textChat, powerKey, powerBar, cancelMovement, moveKey, moveValue);
+        vueMenuGame.addNode(textChat, powerKey, powerBar, cancelMovement, moveKey, moveValue, resetReview, animateReview, animateSpeedReview);
         vueMenuGame.add();
 
         vueMenuMain = new VueMenuMain(gameScreen);
-        vueMenuMain.addNode(play, options, history);
+        vueMenuMain.addNode(play, options, history, background);
         vueMenuMain.add();
 
         vueMenuOptions = new VueMenuOptions(gameScreen);
-        vueMenuOptions.addNode(returnMenu, topBind, bottomBind, leftBind, rightBind, topKey, bottomKey, rightKey, leftKey);
+        vueMenuOptions.addNode(returnMenu, topBind, bottomBind, leftBind, rightBind, topKey, bottomKey, rightKey, leftKey, autoSave);
         vueMenuOptions.add();
 
         vueMenuEndGame = new VueMenuEndGame(gameScreen);
@@ -268,14 +320,17 @@ public class Controller implements Initializable {
         vueMenuEndGame.add();
 
         vueMenuPause = new VueMenuPause(gameScreen);
-        vueMenuPause.addNode(continueGame, saveGame, menu);
+        vueMenuPause.addNode(continueGame, saveGame, menu, background);
         vueMenuPause.add();
 
         vueMenuHistory = new VueMenuHistory(gameScreen);
-        vueMenuHistory.addNode(returnMenu, historyList);
+        vueMenuHistory.addNode(returnMenu, historyList, background);
         vueMenuHistory.add();
     }
 
+    /**
+     * Refresh the history list from the .txt files il the data/games folder
+     */
     public void refreshHistory() {
         historyList.getItems().clear();
         SaveUtils.getSavedGames().forEach(s -> {
@@ -285,21 +340,44 @@ public class Controller implements Initializable {
         historyList.refresh();
     }
 
-    public void placeVisiteds() {
-        double i = 0;
-        for (Localizable localizable : game.getPlayer().getVisited()) {
-            Visited empty = new Visited(localizable.getX(), localizable.getY());
+    /**
+     * Place ImageViews at visiteds locations in the map
+     */
+    public VueVisited placeVisiteds(int needed, double brightness) {
 
-            ColorAdjust blackout = new ColorAdjust();
-            blackout.setBrightness(i);
-            i += 1.0 / game.getPlayer().getVisited().size();
+        for (int i = 0; i < game.getPlayer().getVisited().size(); i++) {
+            Localizable localizable = game.getPlayer().getVisited().get(i);
 
-            VueVisited vueEmpty = new VueVisited(empty, gameScreen);
-            vueEmpty.add();
+            if (i == needed) {
+                Visited empty = new Visited(localizable.getX(), localizable.getY());
 
-            vueEmpty.getImageView().setEffect(blackout);
-            vueElements.put(vueEmpty.getId(), vueEmpty);
+                ColorAdjust blackout = new ColorAdjust();
+                blackout.setBrightness(brightness);
+
+
+                VueVisited vueVisited = new VueVisited(empty, gameScreen);
+                vueVisited.add();
+
+                vueVisited.getImageView().setEffect(blackout);
+                vueElements.put(vueVisited.getId(), vueVisited);
+
+                return vueVisited;
+            }
         }
+        return null;
     }
 
+    public void removeVisiteds() {
+        List<VueElement> toRemove = new ArrayList<>();
+        vueElements.forEach((s, vueElement) -> {
+            if (vueElement instanceof VueVisited) {
+                vueElement.hide();
+                toRemove.add(vueElement);
+            }
+        });
+
+        for (VueElement vueElement : toRemove) {
+            vueElements.remove(vueElement.getId());
+        }
+    }
 }

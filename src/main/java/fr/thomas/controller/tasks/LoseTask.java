@@ -20,14 +20,12 @@ public class LoseTask extends GameTask {
         controller.getGame().setEnd(true);
         SaveUtils.save(controller.getGame());
         controller.refreshHistory();
+
+        new VisitedTasks(controller, true).start();
     }
 
     @Override
     public void onTick() {
-
-        // End
-        if (getTimer() == 50) {
-            getGameLoop().stop();
-        }
+        getGameLoop().stop();
     }
 }

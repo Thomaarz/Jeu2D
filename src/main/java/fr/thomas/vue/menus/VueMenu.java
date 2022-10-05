@@ -22,6 +22,13 @@ public abstract class VueMenu {
         this.nodes.addAll(Arrays.asList(nodes));
     }
 
+    public void removeNode(Node... nodes) {
+        for (Node node : nodes) {
+            gameScreen.getChildren().remove(node);
+        }
+        this.nodes.removeAll(Arrays.asList(nodes));
+    }
+
     public void add() {
         nodes.forEach(node -> {
             if (!gameScreen.getChildren().contains(node)) {

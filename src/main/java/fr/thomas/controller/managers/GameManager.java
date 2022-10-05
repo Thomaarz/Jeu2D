@@ -8,6 +8,7 @@ import fr.thomas.modele.map.Localizable;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.*;
 import fr.thomas.modele.map.entity.Void;
+import fr.thomas.modele.map.save.SaveUtils;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.VuePlayer;
 import fr.thomas.vue.entity.*;
@@ -65,7 +66,11 @@ public class GameManager {
 
         // Add Info in Chat
         controller.getTextChat().clear();
-        controller.addChatLine("Nouvelle partie !");
+        controller.addChatLine("Chargement de la partie (" + game.getName() + ") !");
+        if (game.isEnd()) {
+            controller.addChatLine("Partie terminé, affichage du récapitulatif");
+            controller.addChatLine("Appuyez sur ECHAP pour revenir en arrière");
+        }
 
         // Bind
         controller.getPowerBar().progressProperty().bind(game.getPlayer().getPowerProperty());
@@ -83,6 +88,11 @@ public class GameManager {
     public void clearLastGameMap() {
         controller.getVueElements().forEach((s, vueElement) -> controller.getGameScreen().getChildren().remove(vueElement.getImageView()));
         controller.getVueElements().clear();
+    }
+
+    public void save(Game game) {
+        SaveUtils.save(game);
+        controller.refreshHistory();
     }
 
     /**

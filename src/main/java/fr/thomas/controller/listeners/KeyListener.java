@@ -89,6 +89,10 @@ public class KeyListener implements EventHandler<KeyEvent> {
                 player.addMovement(movement);
                 player.move(movement);
                 controller.getMoveValue().setText(String.valueOf(player.getMovementsHistory().size()));
+
+                if (controller.getAutoSave().isSelected()) {
+                    controller.getGameManager().save(controller.getGame());
+                }
             } catch (MovementException e) {
                 controller.addChatLine(e.getMessage());
                 new LoseTask(controller).start();

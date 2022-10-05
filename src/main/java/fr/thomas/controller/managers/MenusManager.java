@@ -3,10 +3,6 @@ package fr.thomas.controller.managers;
 import fr.thomas.Infos;
 import fr.thomas.controller.Controller;
 import fr.thomas.modele.game.GameState;
-import fr.thomas.modele.map.Localizable;
-import fr.thomas.modele.map.entity.Visited;
-import fr.thomas.vue.entity.VueVisited;
-import javafx.scene.effect.ColorAdjust;
 
 public class MenusManager {
 
@@ -37,6 +33,16 @@ public class MenusManager {
         controller.getVueElements().forEach((s, vueElement) -> {
             vueElement.show();
         });
+
+        if (controller.getGame().isEnd()) {
+            controller.getResetReview().setVisible(true);
+            controller.getAnimateReview().setVisible(true);
+            controller.getAnimateSpeedReview().setVisible(true);
+        } else {
+            controller.getResetReview().setVisible(false);
+            controller.getAnimateReview().setVisible(false);
+            controller.getAnimateSpeedReview().setVisible(false);
+        }
 
         controller.getVueMenuMain().hide();
         controller.getVueMenuOptions().hide();
@@ -82,7 +88,6 @@ public class MenusManager {
     }
 
     public void openEndGameMenu() {
-        controller.placeVisiteds();
         controller.getVueElements().forEach((s, vueElement) -> {
             vueElement.getImageView().setTranslateX(-Infos.WIDTH / 5.0);
             vueElement.getImageView().setTranslateY(Infos.HEIGHT / 5.0);

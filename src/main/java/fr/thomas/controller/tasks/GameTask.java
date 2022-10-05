@@ -46,4 +46,8 @@ public abstract class GameTask {
 		init();
 		gameLoop.play();
 	}
+
+	public void stop() {
+		gameLoop.stop();
+	}
 }
