@@ -7,7 +7,7 @@ import java.util.Random;
 public class Utils {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
-    private static SimpleDateFormat gameFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+    private static SimpleDateFormat gameFormat = new SimpleDateFormat("dd MMM à hh:mm_ss");
 
     public static int random(int min, int max) {
         return new Random().nextInt(max - min + 1) + min;
@@ -20,6 +20,6 @@ public class Utils {
 
     public static String getGameTime() {
         Date date = new Date();
-        return gameFormat.format(date);
+        return gameFormat.format(date).replaceAll(":", "h").replaceAll("_", "min") + "sec";
     }
 }

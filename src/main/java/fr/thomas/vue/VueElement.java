@@ -9,6 +9,8 @@ import lombok.Getter;
 @Getter
 public class VueElement {
 
+    private int x, y;
+
     private Pane gameScreen;
 
     private ImageView imageView;
@@ -18,6 +20,8 @@ public class VueElement {
     public VueElement(Image image, Localizable element, Pane gameScreen) {
         this.gameScreen = gameScreen;
         this.id = "entity" + element.getId();
+        this.x = element.getX();
+        this.y = element.getY();
 
         imageView = new ImageView(image);
         imageView.xProperty().bind(element.getXProperty());

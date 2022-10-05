@@ -1,16 +1,15 @@
 package fr.thomas.modele.map.save;
 
-import com.google.gson.Gson;
 import fr.thomas.modele.entity.Movement;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.Game;
+import fr.thomas.modele.map.Localizable;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.Bloc;
 import fr.thomas.modele.map.entity.Energy;
 import fr.thomas.modele.map.entity.House;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -35,6 +34,7 @@ public class SaveUtils {
 
         Player player = null;
         Map map = new Map();
+        boolean end = false;
 
         try {
             FileInputStream fileInputStream = new FileInputStream(path);
@@ -51,12 +51,24 @@ public class SaveUtils {
                     for (String movement : values[3].split("-")) {
                         player.addMovement(Movement.get(Integer.parseInt(movement)));
                     }
+                    for (String visited : values[4].split("-")) {
+                        try {
+                            int x = Integer.parseInt(visited.split(":")[0]);
+                            int y = Integer.parseInt(visited.split(":")[1]);
+
+                            player.getVisited().add(new Localizable(x, y));
+                        } catch (NumberFormatException e) {
+
+                        }
+                    }
                 } else if (key.equalsIgnoreCase("house")) {
                     map.getMapEntities().add(new House(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
                 } else if (key.equalsIgnoreCase("energy")) {
                     map.getMapEntities().add(new Energy(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
                 } else if (key.equalsIgnoreCase("bloc")) {
                     map.getMapEntities().add(new Bloc(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
+                } else if (key.equalsIgnoreCase("end")) {
+                    end = values[0].equalsIgnoreCase("1");
                 }
             }
 
@@ -69,11 +81,11 @@ public class SaveUtils {
             return null;
         }
 
-        return new Game(name, player, map);
+        return new Game(name, player, map, end);
     }
 
-    public static void save(String name, Game game) {
-        String path = "data/game/" + name + ".txt";
+    public static void save(Game game) {
+        String path = "data/game/" + game.getName().replaceAll(".txt", "").replaceAll(" ", "_") + ".txt";
 
         File directory = new File("data/game/");
         directory.mkdirs();
@@ -92,10 +104,18 @@ public class SaveUtils {
             PrintWriter writer = new PrintWriter(path, "UTF-8");
             StringBuilder movements = new StringBuilder();
             for (int i = 0; i < game.getPlayer().getMovementsHistory().size(); i++) {
+                System.out.println(i);
                 Movement movement = game.getPlayer().getMovementsHistory().get(i);
-                movements.append(movement.getId()).append(i - 1 == game.getPlayer().getMovementsHistory().size() ? "" : "-");
+                movements.append(movement.getId()).append(i == game.getPlayer().getMovementsHistory().size() ? "" : "-");
             }
-            writer.println("Player=" + game.getPlayer().getX() + ";" + game.getPlayer().getY() + ";" + game.getPlayer().getPower() + ";" + movements);
+            StringBuilder visiteds = new StringBuilder();
+            for (int i = 0; i < game.getPlayer().getVisited().size(); i++) {
+
+                Localizable localizable = game.getPlayer().getVisited().get(i);
+                visiteds.append(localizable.getX()).append(":").append(localizable.getY()).append(i == game.getPlayer().getMovementsHistory().size() ? "" : "-");
+            }
+            writer.println("Player=" + game.getPlayer().getX() + ";" + game.getPlayer().getY() + ";" + game.getPlayer().getPower() + ";" + movements + ";" + visiteds);
+            writer.println("End=" + (game.isEnd() ? "1" : "0"));
             game.getMap().getMapEntities().forEach(entity -> {
                 writer.println(entity.getClass().getName().substring(entity.getClass().getName().lastIndexOf('.') + 1) + "=" + entity.getX() + ";" + entity.getY());
             });

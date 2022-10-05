@@ -2,6 +2,7 @@ package fr.thomas.controller.tasks;
 
 import fr.thomas.controller.Controller;
 import fr.thomas.modele.game.GameState;
+import fr.thomas.modele.map.save.SaveUtils;
 
 public class WinTask extends GameTask {
 
@@ -15,6 +16,10 @@ public class WinTask extends GameTask {
                 "Energies collectées: " + controller.getGame().getPlayer().getPowerUsed() + "\n" +
                 "Retours effectués: " + controller.getGame().getPlayer().getCanceledMovements() + "\n" +
                 "");
+
+        controller.getGame().setEnd(true);
+        SaveUtils.save(controller.getGame());
+        controller.refreshHistory();
     }
 
     @Override

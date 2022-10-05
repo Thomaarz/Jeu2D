@@ -3,7 +3,6 @@ package fr.thomas.modele.entity;
 import fr.thomas.Infos;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.modele.map.Localizable;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 
@@ -43,7 +42,7 @@ public class Player extends Localizable {
      * Move the player in the movement
      */
     public Player move(Movement movement) {
-        visited.add(new Localizable(getX(), getY()));
+        visited.add(new Localizable(getX() + movement.getX(), getY() + movement.getY()));
         super.move(movement.getX(), movement.getY());
         return this;
     }

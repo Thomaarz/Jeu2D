@@ -85,11 +85,11 @@
             <TextField fx:id="bottomBind" layoutX="168.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="S" />
             <TextField fx:id="leftBind" layoutX="362.0" layoutY="109.0" prefHeight="25.0" prefWidth="25.0" text="Q" />
             <TextField fx:id="rightBind" layoutX="362.0" layoutY="145.0" prefHeight="25.0" prefWidth="25.0" text="D" />
-            <Button fx:id="gameNext" layoutX="190.0" layoutY="236.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
-            <Text fx:id="endInfos" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="600.0" />
+            <Button fx:id="gameNext" layoutX="361.0" layoutY="269.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Suivant" />
+            <Text fx:id="endInfos" layoutX="348.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="247.0" />
             <Button fx:id="saveGame" layoutX="190.0" layoutY="221.0" prefHeight="55.0" prefWidth="220.0" text="Sauvegarder" />
             <Button fx:id="history" layoutX="190.0" layoutY="296.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="220.0" text="Historique" />
-            <ListView fx:id="historyList" layoutX="204.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="historyList" layoutX="194.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
             <Button fx:id="menu" layoutX="190.0" layoutY="291.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" text="Menu" />
          </children>
       </Pane>

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class Game {
 
-    private String name = "Game-" + Utils.random(0, 10000) + ".txt";
+    private String name = Utils.getGameTime() + ".txt";
 
     private String lore;
 
@@ -19,11 +19,14 @@ public class Game {
 
     private Map map;
 
-    public Game(String name, Player player, Map map) {
+    private boolean end;
+
+    public Game(String name, Player player, Map map, boolean end) {
         this.name = name;
         this.lore = "Partie - " + Utils.getGameTime();
         this.player = player;
         this.map = map;
+        this.end = end;
     }
 
 
@@ -31,6 +34,7 @@ public class Game {
         this.lore = "Partie - " + Utils.getGameTime();
         this.player = player;
         this.map = map;
+        this.end = false;
     }
 
     @Override

@@ -8,16 +8,20 @@ import fr.thomas.controller.tasks.EnemyTask;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.Game;
 import fr.thomas.modele.game.GameState;
+import fr.thomas.modele.map.Localizable;
+import fr.thomas.modele.map.entity.Visited;
 import fr.thomas.modele.map.save.SaveUtils;
 import fr.thomas.modele.map.save.Saves;
 import fr.thomas.utils.Utils;
 import fr.thomas.exceptions.MovementException;
 import fr.thomas.vue.VueElement;
 import fr.thomas.vue.VuePlayer;
+import fr.thomas.vue.entity.VueVisited;
 import fr.thomas.vue.menus.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import lombok.Getter;
@@ -137,11 +141,9 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Saves
-        SaveUtils.getSavedGames().forEach(s -> {
-            Game g = SaveUtils.loadSave(s);
-            historyList.getItems().add(g);
-        });
+        // History
+        refreshHistory();
+
         // Managers
         optionsManager = new OptionsManager(this);
         optionsManager.load();
@@ -210,13 +212,16 @@ public class Controller implements Initializable {
 
             if (event.isControlDown()) {
                 SaveUtils.delete(game.getName());
-                historyList.getItems().remove(game);
-                historyList.refresh();
+                refreshHistory();
                 return;
             }
 
+            gameManager.clearLastGameMap();
             gameManager.createGameFromSave(game);
             gameManager.placeElements();
+            if (game.isEnd()) {
+                placeVisiteds();
+            }
             menusManager.setGameState(GameState.PLAY);
         });
 
@@ -232,9 +237,8 @@ public class Controller implements Initializable {
         });
 
         saveGame.setOnMouseClicked(event -> {
-            SaveUtils.save("Game-" + Utils.random(0, 10000), game);
-            historyList.getItems().add(game);
-            historyList.refresh();
+            SaveUtils.save(game);
+            refreshHistory();
         });
     }
 
@@ -270,6 +274,32 @@ public class Controller implements Initializable {
         vueMenuHistory = new VueMenuHistory(gameScreen);
         vueMenuHistory.addNode(returnMenu, historyList);
         vueMenuHistory.add();
+    }
+
+    public void refreshHistory() {
+        historyList.getItems().clear();
+        SaveUtils.getSavedGames().forEach(s -> {
+            Game g = SaveUtils.loadSave(s);
+            historyList.getItems().add(g);
+        });
+        historyList.refresh();
+    }
+
+    public void placeVisiteds() {
+        double i = 0;
+        for (Localizable localizable : game.getPlayer().getVisited()) {
+            Visited empty = new Visited(localizable.getX(), localizable.getY());
+
+            ColorAdjust blackout = new ColorAdjust();
+            blackout.setBrightness(i);
+            i += 1.0 / game.getPlayer().getVisited().size();
+
+            VueVisited vueEmpty = new VueVisited(empty, gameScreen);
+            vueEmpty.add();
+
+            vueEmpty.getImageView().setEffect(blackout);
+            vueElements.put(vueEmpty.getId(), vueEmpty);
+        }
     }
 
 }

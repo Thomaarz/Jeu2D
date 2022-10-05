@@ -4,7 +4,6 @@ import fr.thomas.Infos;
 import fr.thomas.controller.Controller;
 import fr.thomas.modele.entity.Player;
 import fr.thomas.modele.game.Game;
-import fr.thomas.modele.game.GameState;
 import fr.thomas.modele.map.Localizable;
 import fr.thomas.modele.map.Map;
 import fr.thomas.modele.map.entity.*;
@@ -102,8 +101,8 @@ public class GameManager {
                 vueElement = new VueHouse(element, controller.getGameScreen());
             } else if (element instanceof Void) {
                 vueElement = new VueVoid(element, controller.getGameScreen());
-            } else if (element instanceof Empty) {
-                vueElement = new VueEmpty(element, controller.getGameScreen());
+            } else if (element instanceof Visited) {
+                vueElement = new VueVisited(element, controller.getGameScreen());
             } else if (element instanceof Enemy) {
                 vueElement = new VueEnemy(element, controller.getGameScreen());
             }

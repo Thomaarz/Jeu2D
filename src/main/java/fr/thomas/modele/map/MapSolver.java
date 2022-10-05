@@ -27,6 +27,9 @@ public class MapSolver {
         boolean houseNext = false;
 
         for (Localizable next : nexts) {
+            if (next == null) {
+                continue;
+            }
             if (next.getX() == expected.getX() && next.getY() == expected.getY()) {
                 return true;
             }

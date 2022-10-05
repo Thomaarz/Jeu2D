@@ -56,6 +56,10 @@ public class KeyListener implements EventHandler<KeyEvent> {
             return;
         }
 
+        if (controller.getGame().isEnd()) {
+            return;
+        }
+
         Player player = controller.getGame().getPlayer();
         Map map = controller.getGame().getMap();
 
