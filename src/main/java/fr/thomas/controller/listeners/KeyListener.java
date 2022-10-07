@@ -40,8 +40,6 @@ public class KeyListener implements EventHandler<KeyEvent> {
             movement = Movement.RIGHT;
         } else if (event.getCode() == KeyCode.ESCAPE && controller.getGameState() == GameState.PLAY) {
             controller.getMenusManager().setGameState(GameState.PAUSE);
-        } else if (event.getCode() == KeyCode.B) {
-
         }
 
         if (movement == null) {

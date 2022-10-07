@@ -43,7 +43,7 @@ public class Map {
         createEntities(House.class, 1, 1);
         createBlocs(Bloc.class);
         //createEntities(Enemy.class, 1, 3);
-        createEntities(Energy.class, 5, 7);
+        createEntities(Energy.class, 10, 12);
 
     }
 
@@ -105,7 +105,7 @@ public class Map {
 
         while (current < choose) {
             trys++;
-            if (trys >= choose * 3) {
+            if (trys >= choose * 3 && e != House.class) {
                 break;
             }
 
@@ -136,7 +136,17 @@ public class Map {
 
     public void createBlocs(Class<? extends MapEntity> e) {
 
+        int trys = 0;
+
         while (canGo()) {
+
+            trys++;
+            if (trys >= 500) {
+                break;
+            }
+            if (getElements(Bloc.class).size() >= 200) {
+                break;
+            }
 
             int x = Utils.random(1, Infos.MAP_SIZE - 1);
             int y = Utils.random(1, Infos.MAP_SIZE - 1);

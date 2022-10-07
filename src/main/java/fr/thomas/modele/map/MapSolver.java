@@ -30,6 +30,9 @@ public class MapSolver {
             if (next == null) {
                 continue;
             }
+            if (expected == null) {
+                continue;
+            }
             if (next.getX() == expected.getX() && next.getY() == expected.getY()) {
                 return true;
             }

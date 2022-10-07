@@ -16,5 +16,20 @@
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="rina-api" />
+      <option name="name" value="GitHub Rinaorc Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/rinaorc/rina-api" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="rina-hub" />
+      <option name="name" value="GitHub Rinaorc Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/rinaorc/rina-hub" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="rina-commons" />
+      <option name="name" value="GitHub Rinaorc Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/rinaorc/rina-commons" />
+    </remote-repository>
   </component>
 </project>
